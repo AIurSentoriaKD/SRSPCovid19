@@ -1,0 +1,21 @@
+.root{
+
+}
+#panelizq{
+    -fx-background-color: rgb(57,73,86);
+}
+#txtUsuario{
+    -fx-background-color: -fx-text-box-border, -fx-background;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-background-radius: 0;
+}
+#txtPass{
+    -fx-background-color: -fx-text-box-border, -fx-background;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-background-radius: 0;
+}
+#btnLogin{
+    -fx-background-color: rgb(0,170,226);
+    -fx-text-fill: white;
+    -fx-background-radius: 5px;
+}
