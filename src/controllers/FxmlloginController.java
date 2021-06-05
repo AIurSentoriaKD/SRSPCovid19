@@ -79,8 +79,9 @@ public class FxmlloginController implements Initializable {
                     lblMensaje.setText("Acceso Autorizado");
                     Node node = (Node) event.getSource();
                     Stage thisStage = (Stage) node.getScene().getWindow();
-                    thisStage.hide();
                     LoadMainWindow();
+                    //thisStage.hide();
+                    
                 } else {
                     lblMensaje.setText("Acceso Denegado, verifique el nombre de usuario o Contraseña");
                     System.out.println("Acceso Denegado");
