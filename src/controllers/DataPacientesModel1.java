@@ -130,4 +130,41 @@ public class DataPacientesModel1 {
     public void setdistrito(String value){
         distrito.set(value);
     }
+    //property
+    public StringProperty idpacienteProperty(){
+        return idpaciente;
+    }
+    public StringProperty nombreProperty(){
+        return nombre;
+    }
+    public StringProperty apellidoProperty(){
+        return apellido;
+    }
+    public StringProperty dniProperty(){
+        return dni;
+    }
+    public StringProperty celularProperty(){
+        return celular;
+    }
+    public StringProperty emailProperty(){
+        return email;
+    }
+    public StringProperty sexoProperty(){
+        return sexo;
+    }
+    public StringProperty fechanacProperty(){
+        return fechanac;
+    }
+    public StringProperty pesoProperty(){
+        return peso;
+    }
+    public StringProperty alturaProperty(){
+        return altura;
+    }
+    public StringProperty nacionalidadProperty(){
+        return nacionalidad;
+    }
+    public StringProperty distritoProperty(){
+        return distrito;
+    }
 }

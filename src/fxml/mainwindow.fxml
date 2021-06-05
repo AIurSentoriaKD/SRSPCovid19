@@ -51,7 +51,7 @@
                                                 <TableColumn fx:id="T1CCelular" prefWidth="128.0" text="Celular" />
                                                 <TableColumn fx:id="T1CEmail" prefWidth="106.0" text="Email" />
                                                 <TableColumn fx:id="T1CSexo" prefWidth="102.0" text="Sexo" />
-                                                <TableColumn fx:id="T1CEdad" prefWidth="114.0" text="Edad" />
+                                                <TableColumn fx:id="T1CEdad" prefWidth="114.0" text="FechaNac" />
                                                 <TableColumn prefWidth="127.0" text="Apellido" />
                                             </columns>
                                           </TableView>
@@ -59,10 +59,10 @@
                                        <bottom>
                                           <Pane prefHeight="60.0" prefWidth="763.0" BorderPane.alignment="CENTER">
                                              <children>
-                                                <HBox alignment="CENTER" layoutX="8.0" layoutY="11.0" prefHeight="46.0" prefWidth="336.0" spacing="20.0">
+                                                <HBox alignment="CENTER" layoutX="8.0" layoutY="11.0" prefHeight="46.0" prefWidth="367.0" spacing="20.0">
                                                    <children>
+                                                      <Label text="Buscar por nombre o apellido:" />
                                                       <TextField fx:id="txtPPNombre" prefHeight="25.0" prefWidth="173.0" />
-                                                      <Button fx:id="btnApellidoSearch1" mnemonicParsing="false" text="Buscar por Apellido" />
                                                    </children>
                                                 </HBox>
                                                 <Button fx:id="btnActualizarT1" layoutX="685.0" layoutY="22.0" mnemonicParsing="false" onAction="#ActualizarTablaPacientes1" text="Actualizar" />
@@ -80,35 +80,37 @@
                                        <center>
                                           <Pane prefHeight="449.0" prefWidth="470.0" BorderPane.alignment="CENTER">
                                              <children>
-                                                <Label fx:id="lblIDpaciente1" alignment="CENTER" contentDisplay="CENTER" layoutX="145.0" layoutY="14.0" prefHeight="28.0" prefWidth="174.0" text="IDPA" textAlignment="CENTER">
+                                                <Label fx:id="lblIDpaciente1" alignment="CENTER" contentDisplay="CENTER" layoutX="75.0" layoutY="14.0" prefHeight="28.0" prefWidth="139.0" text="IDPACIENTE:" textAlignment="CENTER">
                                                    <font>
                                                       <Font size="19.0" />
                                                    </font>
                                                 </Label>
-                                                <HBox alignment="CENTER" layoutX="19.0" layoutY="442.0" prefHeight="52.0" prefWidth="433.0" spacing="20.0">
+                                                <Pane layoutX="12.0" layoutY="46.0" prefHeight="471.0" prefWidth="440.0">
                                                    <children>
-                                                      <Button fx:id="btnVerSintomas1" mnemonicParsing="false" onAction="#VerSintomasPaciente1" text="Sintomas" />
-                                                      <Button fx:id="btnFactoresRiesgo1" mnemonicParsing="false" onAction="#VerFactoresRiesgo1" text="Factores de Riesgo" />
-                                                      <Button fx:id="btnMedicacion1" mnemonicParsing="false" onAction="#VerMedicacion1" text="Medicacion" />
-                                                   </children>
-                                                </HBox>
-                                                <Pane layoutX="12.0" layoutY="242.0" prefHeight="206.0" prefWidth="440.0">
-                                                   <children>
-                                                      <GridPane layoutX="39.0" layoutY="45.0" prefHeight="147.0" prefWidth="362.0">
+                                                      <GridPane layoutX="39.0" layoutY="45.0" prefHeight="414.0" prefWidth="362.0">
                                                          <columnConstraints>
                                                             <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="192.0" minWidth="10.0" prefWidth="141.0" />
-                                                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="116.0" minWidth="10.0" prefWidth="24.0" />
-                                                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="197.0" minWidth="10.0" prefWidth="197.0" />
+                                                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="116.0" minWidth="0.0" prefWidth="18.0" />
+                                                            <ColumnConstraints halignment="CENTER" maxWidth="221.0" minWidth="10.0" prefWidth="203.0" />
                                                          </columnConstraints>
                                                          <rowConstraints>
-                                                            <RowConstraints maxHeight="84.0" minHeight="10.0" prefHeight="67.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints maxHeight="84.0" minHeight="10.0" prefHeight="51.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints maxHeight="111.0" minHeight="10.0" prefHeight="87.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints maxHeight="111.0" minHeight="10.0" prefHeight="111.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints maxHeight="111.0" minHeight="10.0" prefHeight="111.0" vgrow="SOMETIMES" />
                                                             <RowConstraints maxHeight="111.0" minHeight="10.0" prefHeight="111.0" vgrow="SOMETIMES" />
                                                          </rowConstraints>
                                                          <children>
                                                             <Label text="FECHA TRATAMIENTO:" />
                                                             <Label text="DESCRIPCION:" GridPane.rowIndex="1" />
                                                             <TextField fx:id="txtDateTratamiento" GridPane.columnIndex="2" />
-                                                            <TextArea prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                            <TextArea fx:id="txtflDesTratamiento" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                            <TextArea prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                                            <Label text="SINTOMAS:" GridPane.rowIndex="2" />
+                                                            <TextArea prefHeight="31.0" prefWidth="197.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                            <Label text="FACTORES DE RIESGO:" GridPane.rowIndex="3" />
+                                                            <Label text="MEDICACION" GridPane.rowIndex="4" />
+                                                            <TextArea prefHeight="107.0" prefWidth="194.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
                                                          </children>
                                                       </GridPane>
                                                       <Label layoutX="14.0" layoutY="14.0" text="TRATAMIENTO DADO">
@@ -118,38 +120,11 @@
                                                       </Label>
                                                    </children>
                                                 </Pane>
-                                                <Pane layoutX="12.0" layoutY="42.0" prefHeight="194.0" prefWidth="440.0">
-                                                   <children>
-                                                      <GridPane layoutX="39.0" layoutY="41.0" prefHeight="139.0" prefWidth="362.0">
-                                                        <columnConstraints>
-                                                          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="192.0" minWidth="10.0" prefWidth="141.0" />
-                                                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="116.0" minWidth="10.0" prefWidth="24.0" />
-                                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="197.0" minWidth="10.0" prefWidth="197.0" />
-                                                        </columnConstraints>
-                                                        <rowConstraints>
-                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                        </rowConstraints>
-                                                         <children>
-                                                            <Label text="IDPRUEBA:" />
-                                                            <Label text="RESULTADO:" GridPane.rowIndex="1" />
-                                                            <Label text="FECHA DE PRUEBA:" GridPane.rowIndex="2" />
-                                                            <Label text="PERIODICA:" GridPane.rowIndex="3" />
-                                                            <TextField fx:id="txtIDPrueba1" GridPane.columnIndex="2" />
-                                                            <TextField fx:id="txtResultado1" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                                            <TextField fx:id="txtfechaPrueba1" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                                                            <TextField fx:id="txtPeriodica1" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                                                         </children>
-                                                      </GridPane>
-                                                      <Label layoutX="72.0" layoutY="14.0" text="ESTADO DE PRUEBA DE PACIENTE: ">
-                                                         <font>
-                                                            <Font size="19.0" />
-                                                         </font>
-                                                      </Label>
-                                                   </children>
-                                                </Pane>
+                                                <Label fx:id="lblIDpaciente11" alignment="CENTER" contentDisplay="CENTER" layoutX="214.0" layoutY="14.0" prefHeight="28.0" prefWidth="174.0" text="IDPACIENTE:" textAlignment="CENTER">
+                                                   <font>
+                                                      <Font size="19.0" />
+                                                   </font>
+                                                </Label>
                                              </children>
                                           </Pane>
                                        </center>
@@ -421,7 +396,7 @@
                                             <columns>
                                               <TableColumn fx:id="T2CIDPaciente" prefWidth="75.0" text="IDPaciente" />
                                               <TableColumn fx:id="T2CNombre" prefWidth="167.0" text="Nombre" />
-                                                <TableColumn fx:id="T2IDPrueba" prefWidth="69.0" text="idPrueba" />
+                                                <TableColumn fx:id="T2IDPrueba" prefWidth="69.0" text="idhistorial" />
                                             </columns>
                                           </TableView>
                                           <Label layoutX="80.0" layoutY="14.0" text="PACIENTES RECIENTES">
@@ -618,13 +593,13 @@
                                                 <Font size="19.0" />
                                              </font>
                                           </Label>
-                                          <TableView fx:id="T5HistorlalYPaciente1" layoutX="12.0" layoutY="42.0" prefHeight="515.0" prefWidth="520.0">
+                                          <TableView fx:id="T5HistorlalYPaciente1" layoutX="2.0" layoutY="42.0" prefHeight="515.0" prefWidth="538.0">
                                              <columns>
                                                 <TableColumn fx:id="T5CIDHistorial1" prefWidth="75.0" text="IDHistorial" />
                                                 <TableColumn fx:id="T5CIDPaciente1" prefWidth="75.0" text="IDPaciente" />
-                                                <TableColumn fx:id="T5CNombre1" prefWidth="202.0" text="Nombre" />
-                                                <TableColumn fx:id="T5CFechaInscrito1" prefWidth="101.0" text="FechaInscrito" />
-                                                <TableColumn fx:id="T5CEdad1" prefWidth="66.0" text="Edad" />
+                                                <TableColumn fx:id="T5CNombre1" prefWidth="140.0" text="Nombre" />
+                                                <TableColumn fx:id="T5CFechaInscrito1" prefWidth="97.0" text="numero" />
+                                                <TableColumn fx:id="T5CEdad1" prefWidth="150.0" text="correo" />
                                              </columns>
                                           </TableView>
                                        </children>
@@ -645,12 +620,6 @@
                                           <Pane layoutX="243.0" layoutY="42.0" prefHeight="260.0" prefWidth="214.0">
                                              <children>
                                                 <Label layoutX="86.0" layoutY="6.0" text="PRUEBAS" />
-                                                <TableView fx:id="T6Minidetallepruebas" layoutX="7.0" layoutY="30.0" prefHeight="219.0" prefWidth="200.0">
-                                                  <columns>
-                                                    <TableColumn fx:id="T6CIdPrueba" prefWidth="81.0" text="idprueba" />
-                                                    <TableColumn fx:id="T6CResultado" prefWidth="118.0" text="Resultado" />
-                                                  </columns>
-                                                </TableView>
                                              </children>
                                           </Pane>
                                           <Pane layoutX="14.0" layoutY="42.0" prefHeight="260.0" prefWidth="214.0">

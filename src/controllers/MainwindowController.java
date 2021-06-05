@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -45,8 +47,6 @@ public class MainwindowController implements Initializable {
     @FXML
     private TextField txtPPNombre;
     @FXML
-    private Button btnApellidoSearch1;
-    @FXML
     private Button btnActualizarT1;
     @FXML
     private TableView<DataPacientesModel1> TTPacientes1;
@@ -71,21 +71,7 @@ public class MainwindowController implements Initializable {
     @FXML
     private Label lblIDpaciente1;
     @FXML
-    private Button btnVerSintomas1;
-    @FXML
-    private Button btnFactoresRiesgo1;
-    @FXML
-    private Button btnMedicacion1;
-    @FXML
     private TextField txtDateTratamiento;
-    @FXML
-    private TextField txtIDPrueba1;
-    @FXML
-    private TextField txtResultado1;
-    @FXML
-    private TextField txtfechaPrueba1;
-    @FXML
-    private TextField txtPeriodica1;
     @FXML
     private Tab tabPacienteNuevo;
     @FXML
@@ -235,12 +221,6 @@ public class MainwindowController implements Initializable {
     @FXML
     private TableColumn<?, ?> T5CEdad1;
     @FXML
-    private TableView<?> T6Minidetallepruebas;
-    @FXML
-    private TableColumn<?, ?> T6CIdPrueba;
-    @FXML
-    private TableColumn<?, ?> T6CResultado;
-    @FXML
     private TextField txtsexo5;
     @FXML
     private TextField txtDni5;
@@ -280,13 +260,19 @@ public class MainwindowController implements Initializable {
     private Button btnActualizarGrafico7;
     @FXML
     private BarChart<?, ?> grafInfectadosPorDistrito;
+    @FXML
+    private TextArea txtflDesTratamiento;
+    @FXML
+    private Label lblIDpaciente11;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        dc = new DBConnector();
         try {
+            //DATA primer tab
             Connection conn = dc.Connect();
             data = FXCollections.observableArrayList();
             ResultSet rs = conn.createStatement().executeQuery("select * from TPaciente");
@@ -313,17 +299,80 @@ public class MainwindowController implements Initializable {
             T1CEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
             T1CSexo.setCellValueFactory(new PropertyValueFactory<>("sexo"));
             T1CEdad.setCellValueFactory(new PropertyValueFactory<>("fechanac"));
-            
-            
+
             TTPacientes1.setItems(null);
             TTPacientes1.setItems(data);
-        }catch(SQLException e){
+
+            //Filtered primer tab
+            FilteredList<DataPacientesModel1> filtror = new FilteredList<>(data, b -> true);
+            txtPPNombre.textProperty().addListener((observable, oldValue, newValue) -> {
+                filtror.setPredicate(ModelTable -> {
+                    if (newValue == null || newValue.isEmpty()) {
+                        return true;
+                    }
+                    String lowercaseFilter = newValue.toLowerCase();
+
+                    //int idcliente = ModelTable.getidcliente().toLowerCase().indexOf(lowercaseFilter);
+                    if (ModelTable.getapellido().toLowerCase().indexOf(lowercaseFilter) != -1) {
+                        return true;
+                    } else if (ModelTable.getnombre().toLowerCase().indexOf(lowercaseFilter) != -1) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+
+                });
+            });
+
+            SortedList<DataPacientesModel1> sortedData = new SortedList<>(filtror);
+            sortedData.comparatorProperty().bind(TTPacientes1.comparatorProperty());
+            TTPacientes1.setItems(sortedData);
             
+        } catch (SQLException e) {
+            System.out.println(e);
+            e.printStackTrace(System.out);
         }
     }
 
     @FXML
     private void ActualizarTablaPacientes1(ActionEvent event) {
+        dc = new DBConnector();
+        try {
+            Connection conn = dc.Connect();
+            data = FXCollections.observableArrayList();
+            ResultSet rs = conn.createStatement().executeQuery("select * from TPaciente");
+
+            while (rs.next()) {
+
+                data.add(new DataPacientesModel1(
+                        rs.getString(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getString(6),
+                        rs.getString(7),
+                        rs.getString(8),
+                        rs.getString(9),
+                        rs.getString(10),
+                        rs.getString(11),
+                        rs.getString(12)
+                ));
+            }
+            T1CNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+            T1CApellido.setCellValueFactory(new PropertyValueFactory<>("apellido"));
+            T1CDNI.setCellValueFactory(new PropertyValueFactory<>("dni"));
+            T1CCelular.setCellValueFactory(new PropertyValueFactory<>("celular"));
+            T1CEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+            T1CSexo.setCellValueFactory(new PropertyValueFactory<>("sexo"));
+            T1CEdad.setCellValueFactory(new PropertyValueFactory<>("fechanac"));
+
+            TTPacientes1.setItems(null);
+            TTPacientes1.setItems(data);
+        } catch (SQLException e) {
+            System.out.println(e);
+            e.printStackTrace(System.out);
+        }
     }
 
     @FXML
@@ -334,17 +383,6 @@ public class MainwindowController implements Initializable {
     private void EditarDatosPaciente(ActionEvent event) {
     }
 
-    @FXML
-    private void VerSintomasPaciente1(ActionEvent event) {
-    }
-
-    @FXML
-    private void VerFactoresRiesgo1(ActionEvent event) {
-    }
-
-    @FXML
-    private void VerMedicacion1(ActionEvent event) {
-    }
 
     @FXML
     private void LimpiarDatos2(ActionEvent event) {
