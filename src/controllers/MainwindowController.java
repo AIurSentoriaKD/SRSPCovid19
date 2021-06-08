@@ -101,14 +101,6 @@ public class MainwindowController implements Initializable {
     @FXML
     private TextArea txtASintomas2;
     @FXML
-    private Button btnAgregarSintoma2;
-    @FXML
-    private ListView<?> lstSintomas2;
-    @FXML
-    private Button btnEditar2;
-    @FXML
-    private Button btnEliminarSintoma2;
-    @FXML
     private ComboBox<?> cmbTipoPrueba2;
     @FXML
     private Label lblPrecioPrueba2;
@@ -264,6 +256,10 @@ public class MainwindowController implements Initializable {
     private TextArea txtflDesTratamiento;
     @FXML
     private Label lblIDpaciente11;
+    @FXML
+    private TextField txtAltura2;
+    @FXML
+    private Label lblMensaje2;
 
     /**
      * Initializes the controller class.
@@ -388,20 +384,15 @@ public class MainwindowController implements Initializable {
     private void LimpiarDatos2(ActionEvent event) {
     }
 
-    @FXML
-    private void AgregarSintomatoList2(ActionEvent event) {
-    }
-
-    @FXML
-    private void EditarSintomaFrmList2(ActionEvent event) {
-    }
-
-    @FXML
-    private void EliminarSintomaobjFromList2(ActionEvent event) {
-    }
 
     @FXML
     private void ConfirmarDatosdePaciente2(ActionEvent event) {
+        String DP_DNI = txtDNI2.getText();
+        String DP_APMat = txtAPMat2.getText();
+        String DP_APPat = txtPatern2.getText();
+        if(txtDNI2.getText().equals("")){
+            
+        }
     }
 
     @FXML

@@ -15,6 +15,7 @@ import javafx.beans.property.StringProperty;
 public class DataPacientesModel1 {
 
     StringProperty idpaciente,
+            idpersonal,
             nombre,
             apellido,
             dni,
