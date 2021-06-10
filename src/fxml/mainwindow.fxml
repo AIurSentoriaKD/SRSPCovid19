@@ -29,7 +29,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainwindowController">
+<BorderPane fx:id="mainborder" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainwindowController">
    <bottom>
       <TabPane prefHeight="696.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
@@ -43,7 +43,7 @@
                                  <children>
                                     <BorderPane layoutX="14.0" layoutY="14.0" prefHeight="646.0" prefWidth="763.0">
                                        <center>
-                                          <TableView fx:id="TTPacientes1" prefHeight="464.0" prefWidth="763.0" BorderPane.alignment="CENTER">
+                                          <TableView fx:id="TTPacientes1" onMouseClicked="#llenarPacientesTab1" prefHeight="464.0" prefWidth="763.0" BorderPane.alignment="CENTER">
                                             <columns>
                                               <TableColumn fx:id="T1CNombre" prefWidth="107.0" text="Nombre" />
                                               <TableColumn fx:id="T1CApellido" prefWidth="127.0" text="Apellido" />
@@ -101,16 +101,16 @@
                                                             <RowConstraints maxHeight="111.0" minHeight="10.0" prefHeight="111.0" vgrow="SOMETIMES" />
                                                          </rowConstraints>
                                                          <children>
-                                                            <Label text="FECHA TRATAMIENTO:" />
+                                                            <Label text="FECHA REGISTRO:" />
                                                             <Label text="DESCRIPCION:" GridPane.rowIndex="1" />
-                                                            <TextField fx:id="txtDateTratamiento" GridPane.columnIndex="2" />
-                                                            <TextArea fx:id="txtflDesTratamiento" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                                            <TextArea prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                                            <TextField fx:id="txtDateTratamiento" editable="false" GridPane.columnIndex="2" />
+                                                            <TextArea fx:id="txtflDesTratamiento" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                            <TextArea fx:id="txtFacctRisk1" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                                                             <Label text="SINTOMAS:" GridPane.rowIndex="2" />
-                                                            <TextArea prefHeight="31.0" prefWidth="197.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                            <TextArea fx:id="txtSintomas1" editable="false" prefHeight="31.0" prefWidth="197.0" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                                                             <Label text="FACTORES DE RIESGO:" GridPane.rowIndex="3" />
                                                             <Label text="MEDICACION" GridPane.rowIndex="4" />
-                                                            <TextArea prefHeight="107.0" prefWidth="194.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                                            <TextArea fx:id="txtMedicacion1" editable="false" prefHeight="107.0" prefWidth="194.0" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="4" />
                                                          </children>
                                                       </GridPane>
                                                       <Label layoutX="14.0" layoutY="14.0" text="TRATAMIENTO DADO">
@@ -120,7 +120,7 @@
                                                       </Label>
                                                    </children>
                                                 </Pane>
-                                                <Label fx:id="lblIDpaciente11" alignment="CENTER" contentDisplay="CENTER" layoutX="214.0" layoutY="14.0" prefHeight="28.0" prefWidth="174.0" text="IDPACIENTE:" textAlignment="CENTER">
+                                                <Label fx:id="lblIDpaciente11" alignment="CENTER" contentDisplay="CENTER" layoutX="214.0" layoutY="14.0" prefHeight="28.0" prefWidth="55.0" textAlignment="CENTER">
                                                    <font>
                                                       <Font size="19.0" />
                                                    </font>
@@ -187,9 +187,12 @@
                                                                      </children>
                                                                   </Pane>
                                                                   <HBox alignment="CENTER" prefHeight="51.0" prefWidth="200.0" />
-                                                                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                                                  <HBox alignment="CENTER" prefHeight="150.0" prefWidth="240.0">
                                                                      <children>
-                                                                        <Label fx:id="lblMensaje2" alignment="CENTER" contentDisplay="CENTER" prefHeight="71.0" prefWidth="174.0" text="msgs datos personales" />
+                                                                        <Label fx:id="lblMensaje2" alignment="CENTER" contentDisplay="CENTER" prefHeight="146.0" prefWidth="218.0" textAlignment="CENTER" wrapText="true">
+                                                                           <font>
+                                                                              <Font name="System Bold" size="21.0" />
+                                                                           </font></Label>
                                                                      </children>
                                                                   </HBox>
                                                                </children>
@@ -228,12 +231,12 @@
                                                                               <Label text="Nombres:" GridPane.rowIndex="3" />
                                                                               <Label text="Correo E:" GridPane.rowIndex="4" />
                                                                               <Label text="Teléfono:" GridPane.rowIndex="5" />
-                                                                              <TextField fx:id="txtDNI2" GridPane.columnIndex="2" />
+                                                                              <TextField fx:id="txtDNI2" promptText="DNI (8 digitos)" GridPane.columnIndex="2" />
                                                                               <TextField fx:id="txtAPMat2" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                                                               <TextField fx:id="txtPatern2" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                                                                               <TextField fx:id="txtNombres2" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                                                                               <TextField fx:id="txtCorreoE2" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                                                                              <TextField fx:id="txtTelef2" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                                                              <TextField fx:id="txtTelef2" promptText="Celular (9 digitos)" GridPane.columnIndex="2" GridPane.rowIndex="5" />
                                                                            </children>
                                                                         </GridPane>
                                                                      </children>
@@ -271,7 +274,7 @@
                                                                               <ComboBox fx:id="cmbDistrito2" prefHeight="25.0" prefWidth="204.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
                                                                               <TextField fx:id="txtPeso2" GridPane.columnIndex="2" />
                                                                               <DatePicker fx:id="dateNacPac2" prefHeight="25.0" prefWidth="189.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                                                                              <Label text="Peso" GridPane.rowIndex="1" />
+                                                                              <Label text="Altura:" GridPane.rowIndex="1" />
                                                                               <TextField fx:id="txtAltura2" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                                                            </children>
                                                                         </GridPane>
@@ -312,7 +315,7 @@
                                                       <VBox alignment="CENTER" prefHeight="227.0" prefWidth="334.0" spacing="5.0">
                                                          <children>
                                                             <Label text="Ingrese los sintomas aqui:" />
-                                                            <TextArea fx:id="txtASintomas2" prefHeight="153.0" prefWidth="334.0" />
+                                                            <TextArea fx:id="txtASintomas2" prefHeight="153.0" prefWidth="334.0" wrapText="true" />
                                                          </children>
                                                       </VBox>
                                                    </children>
@@ -344,9 +347,9 @@
                                                   </rowConstraints>
                                                    <children>
                                                       <Label text="Tipo de prueba:" />
-                                                      <ComboBox fx:id="cmbTipoPrueba2" prefHeight="25.0" prefWidth="237.0" GridPane.columnIndex="2" />
+                                                      <ComboBox fx:id="cmbTipoPrueba2" onAction="#cmbTipoPruebaPrices" prefHeight="25.0" prefWidth="237.0" GridPane.columnIndex="2" />
                                                       <Label text="Precio:" GridPane.rowIndex="1" />
-                                                      <Label fx:id="lblPrecioPrueba2" text="Precio dependiendo de la seleccion del cmb" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                      <Label fx:id="lblPrecioPrueba2" prefHeight="17.0" prefWidth="78.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                                       <Label text="Fecha:" GridPane.rowIndex="2" />
                                                       <DatePicker fx:id="datePrueba2" prefHeight="25.0" prefWidth="238.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                                                       <CheckBox fx:id="chkPeriodica2" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="3" />
@@ -373,7 +376,7 @@
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab fx:id="TabTratamientos" text="Tratamientos">
+            <Tab fx:id="TabTratamientos" onSelectionChanged="#TabTratamientosChange" text="Tratamientos">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -413,7 +416,7 @@
                                                 <Font size="18.0" />
                                              </font>
                                           </Label>
-                                          <TextArea fx:id="txtAreaDescTrat3" layoutX="200.0" layoutY="50.0" prefHeight="200.0" prefWidth="333.0" />
+                                          <TextArea fx:id="txtAreaDescTrat3" layoutX="200.0" layoutY="50.0" prefHeight="200.0" prefWidth="333.0" wrapText="true" />
                                           <GridPane layoutX="14.0" layoutY="51.0" prefHeight="198.0" prefWidth="174.0">
                                             <columnConstraints>
                                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -579,7 +582,7 @@
                                           <Button fx:id="btnActualizarListaSeguimiento5" layoutX="423.0" layoutY="569.0" mnemonicParsing="false" onAction="#ActualizarTablaListaSeguimineto5" prefHeight="47.0" prefWidth="101.0" text="ACTUALIZAR" />
                                           <TextField fx:id="txtNombreLstPacientes5" layoutX="171.0" layoutY="580.0" />
                                           <Label layoutX="54.0" layoutY="584.0" text="Buscar por Nombre:" />
-                                          <Label layoutX="183.0" layoutY="14.0" text="LISTA DE PACIENTES">
+                                          <Label layoutX="111.0" layoutY="14.0" text="LISTA DE PACIENTES POSITIVO COVID">
                                              <font>
                                                 <Font size="19.0" />
                                              </font>
@@ -608,15 +611,10 @@
                                                 <Font size="19.0" />
                                              </font>
                                           </Label>
-                                          <Pane layoutX="243.0" layoutY="42.0" prefHeight="260.0" prefWidth="214.0">
-                                             <children>
-                                                <Label layoutX="86.0" layoutY="6.0" text="PRUEBAS" />
-                                             </children>
-                                          </Pane>
-                                          <Pane layoutX="14.0" layoutY="42.0" prefHeight="260.0" prefWidth="214.0">
+                                          <Pane layoutX="14.0" layoutY="42.0" prefHeight="260.0" prefWidth="304.0">
                                              <children>
                                                 <Label layoutX="81.0" layoutY="6.0" text="DETALLES" />
-                                                <GridPane layoutX="4.0" layoutY="34.0" prefHeight="220.0" prefWidth="204.0">
+                                                <GridPane layoutX="4.0" layoutY="34.0" prefHeight="220.0" prefWidth="283.0">
                                                   <columnConstraints>
                                                     <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="94.0" minWidth="10.0" prefWidth="75.0" />
                                                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="123.0" minWidth="9.0" prefWidth="9.0" />
@@ -647,10 +645,10 @@
                                                 </GridPane>
                                              </children>
                                           </Pane>
-                                          <Pane layoutX="473.0" layoutY="42.0" prefHeight="260.0" prefWidth="214.0">
+                                          <Pane layoutX="391.0" layoutY="42.0" prefHeight="260.0" prefWidth="296.0">
                                              <children>
                                                 <Label layoutX="78.0" layoutY="6.0" text="SINTOMAS" />
-                                                <ListView fx:id="txtAreaSintomas5" layoutX="7.0" layoutY="30.0" prefHeight="219.0" prefWidth="200.0" />
+                                                <TextArea fx:id="txtfldSintomas5" layoutX="7.0" layoutY="30.0" prefHeight="200.0" prefWidth="200.0" />
                                              </children>
                                           </Pane>
                                           <Label fx:id="lblIdPacienteSeguimiento" layoutX="357.0" layoutY="14.0" text="idpaciente">

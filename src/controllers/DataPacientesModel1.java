@@ -16,6 +16,8 @@ public class DataPacientesModel1 {
 
     StringProperty idpaciente,
             idpersonal,
+            idhistorial,
+            idtratamiento,
             nombre,
             apellido,
             dni,
@@ -26,10 +28,18 @@ public class DataPacientesModel1 {
             peso,
             altura,
             nacionalidad,
-            distrito;
+            distrito,
+            fechahistorial,
+            sintomas,
+            descriesgos,
+            descmedicamentos,
+            desctratamiento;
 
     public DataPacientesModel1(
             String idpaciente,
+            String idpersonal,
+            String idhistorial,
+            String idtratamiento,
             String nombre,
             String apellido,
             String dni,
@@ -40,9 +50,17 @@ public class DataPacientesModel1 {
             String peso,
             String altura,
             String nacionalidad,
-            String distrito
+            String distrito,
+            String fechahistorial,
+            String sintomas,
+            String descriesgos,
+            String descmedicamentos,
+            String desctratamiento
     ) {
         this.idpaciente = new SimpleStringProperty(idpaciente);
+        this.idpersonal = new SimpleStringProperty(idpersonal);
+        this.idhistorial = new SimpleStringProperty(idhistorial);
+        this.idtratamiento = new SimpleStringProperty(idtratamiento);
         this.nombre = new SimpleStringProperty(nombre);
         this.apellido = new SimpleStringProperty(apellido);
         this.dni = new SimpleStringProperty(dni);
@@ -53,12 +71,25 @@ public class DataPacientesModel1 {
         this.peso = new SimpleStringProperty(peso);
         this.altura = new SimpleStringProperty(altura);
         this.nacionalidad = new SimpleStringProperty(nacionalidad);
-        this.distrito = new SimpleStringProperty(distrito);
+        this.fechahistorial = new SimpleStringProperty(fechahistorial);
+        this.sintomas = new SimpleStringProperty(sintomas);
+        this.descriesgos = new SimpleStringProperty(descriesgos);
+        this.descmedicamentos = new SimpleStringProperty(descmedicamentos);
+        this.desctratamiento = new SimpleStringProperty(desctratamiento);
 
     }
     //GETTERS
     public String getidpaciente(){
         return idpaciente.get();
+    }
+    public String getidpersonal(){
+        return idpersonal.get();
+    }
+    public String getidhistorial(){
+        return idhistorial.get();
+    }
+    public String getidtratamiento(){
+        return idtratamiento.get();
     }
     public String getnombre(){
         return nombre.get();
@@ -93,10 +124,35 @@ public class DataPacientesModel1 {
     public String getdistrito(){
         return distrito.get();
     }
+    public String getfechahistorial(){
+        return fechahistorial.get();
+    }
+    public String getsintomas(){
+        return sintomas.get();
+    }
+    public String getdescriesgos(){
+        return descriesgos.get();
+    }
+    public String getdescmedicamentos(){
+        return descmedicamentos.get();
+    }
+    public String getdesctratamiento(){
+        return desctratamiento.get();
+    }
+    
 
     //SETTERS
     public void setidpaciente(String value){
         idpaciente.set(value);
+    }
+    public void setidpersonal(String value){
+        idpersonal.set(value);
+    }
+    public void setidhistorial(String value){
+        idhistorial.set(value);
+    }
+    public void setidtratamiento(String value){
+        idtratamiento.set(value);
     }
     public void setnombre(String value){
         nombre.set(value);
@@ -131,9 +187,34 @@ public class DataPacientesModel1 {
     public void setdistrito(String value){
         distrito.set(value);
     }
+    public void setfechahistorial(String value){
+        fechahistorial.set(value);
+    }
+    public void setsintomas(String value){
+        sintomas.set(value);
+    }
+    public void setdescriesgos(String value){
+        descriesgos.set(value);
+    }
+    public void setdescmedicamentos(String value){
+        descmedicamentos.set(value);
+    }
+    public void setdesctratamiento(String value){
+        desctratamiento.set(value);
+    }
+    
     //property
     public StringProperty idpacienteProperty(){
         return idpaciente;
+    }
+    public StringProperty idpersonalProperty(){
+        return idpersonal;
+    }
+    public StringProperty idhistorialProperty(){
+        return idhistorial;
+    }
+    public StringProperty idtratamientoProperty(){
+        return idtratamiento;
     }
     public StringProperty nombreProperty(){
         return nombre;
@@ -167,5 +248,17 @@ public class DataPacientesModel1 {
     }
     public StringProperty distritoProperty(){
         return distrito;
+    }
+    public StringProperty sintomasProperty(){
+        return sintomas;
+    }
+    public StringProperty descriesgosProperty(){
+        return descriesgos;
+    }
+    public StringProperty descmedicamentosProperty(){
+        return descmedicamentos;
+    }
+    public StringProperty desctratamientoProperty(){
+        return desctratamiento;
     }
 }

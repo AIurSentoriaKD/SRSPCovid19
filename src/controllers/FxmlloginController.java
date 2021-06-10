@@ -69,10 +69,14 @@ public class FxmlloginController implements Initializable {
             try {
                 ResultSet rs = conn.createStatement().executeQuery("select * from TPersonalMedico where Username ='" + txtUsername + "' and Contraseña = '" + txtPassword + "'");
                 String userdb = null, pass = null;
+                String userid = null, Nombre = null, Apellido = null;
                 while (rs.next()) {
-                    System.out.println(rs.getString("IdPersonal") + rs.getString("Username") + rs.getString("Contraseña") + rs.getString("Cargo") + rs.getString("Nombre") + rs.getString("IdPersonal") + rs.getString("apellido") + rs.getString("DNI"));
+                    System.out.println(rs.getString("Username") + rs.getString("Contraseña") + rs.getString("Cargo") + rs.getString("Nombre") + rs.getString("IdPersonal") + rs.getString("apellido") + rs.getString("DNI"));
                     userdb = rs.getString("Username");
                     pass = rs.getString("Contraseña");
+                    userid = rs.getString("IdPersonal");
+                    Nombre = rs.getString("Nombre");
+                    Apellido = rs.getString("apellido");
 
                 }
                 if (txtUsername.equals(userdb) && txtPassword.equals(pass)) {
@@ -81,14 +85,15 @@ public class FxmlloginController implements Initializable {
                     Node node = (Node) event.getSource();
                     Stage thisStage = (Stage) node.getScene().getWindow();
                     thisStage.hide();
-                    
+
                     Stage stage = new Stage();
                     URL dir = new File("src/FXML/mainwindow.fxml").toURI().toURL();
                     Parent root = FXMLLoader.load(dir);
                     Scene scene = new Scene(root);
                     stage.setResizable(false);
                     stage.setScene(scene);
-                    stage.setTitle("S.R.S.P");
+                    String StageTitle = userid + " " + Nombre + " " + Apellido + " S.R.S.P";
+                    stage.setTitle(StageTitle);
                     stage.show();
 
                 } else {

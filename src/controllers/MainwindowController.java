@@ -9,14 +9,22 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -31,6 +39,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -225,8 +236,6 @@ public class MainwindowController implements Initializable {
     @FXML
     private TextField txtfechanac5;
     @FXML
-    private ListView<?> txtAreaSintomas5;
-    @FXML
     private Label lblIdPacienteSeguimiento;
     @FXML
     private TextArea txtAreaSintomasNuevos5;
@@ -260,6 +269,16 @@ public class MainwindowController implements Initializable {
     private TextField txtAltura2;
     @FXML
     private Label lblMensaje2;
+    @FXML
+    private TextArea txtFacctRisk1;
+    @FXML
+    private TextArea txtSintomas1;
+    @FXML
+    private TextArea txtMedicacion1;
+    @FXML
+    private BorderPane mainborder;
+    @FXML
+    private TextArea txtfldSintomas5;
 
     /**
      * Initializes the controller class.
@@ -267,12 +286,50 @@ public class MainwindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         dc = new DBConnector();
+        //inicializando comoboxes tab2
+        List<String> Nacionalidadescmb = new ArrayList<>();
+        Nacionalidadescmb.add("Peru");
+        Nacionalidadescmb.add("chile");
+        Nacionalidadescmb.add("argentina");
+        ObservableList Nacionalidadescmblist = FXCollections.observableList(Nacionalidadescmb);
+        cmbNacionac2.getItems().clear();
+        cmbNacionac2.setItems(Nacionalidadescmblist);
+
+        List<String> Distritoscmb = new ArrayList<>();
+        Distritoscmb.add("Santiago");
+        Distritoscmb.add("Cusco");
+        Distritoscmb.add("Wanchaq");
+        ObservableList distritoscmblist = FXCollections.observableList(Distritoscmb);
+        cmbDistrito2.getItems().clear();
+        cmbDistrito2.setItems(distritoscmblist);
+
+        List<String> tipospruebacmb = new ArrayList<>();
+        tipospruebacmb.add("Rapida");
+        tipospruebacmb.add("Molecular");
+        tipospruebacmb.add("Isopada");
+
+        ObservableList pruebascmblist = FXCollections.observableList(tipospruebacmb);
+        cmbTipoPrueba2.getItems().clear();
+        cmbTipoPrueba2.setItems(pruebascmblist);
+
+    }
+
+    @FXML
+    private void ActualizarTablaPacientes1(ActionEvent event) {
+        dc = new DBConnector();
         try {
-            //DATA primer tab
             Connection conn = dc.Connect();
+            Stage stage = (Stage) btnActualizarT1.getScene().getWindow();
+            String title = stage.getTitle();
+            //System.out.println(title);
+            String[] parts = title.split(" ");
+            String IDpersonal = parts[0];
             data = FXCollections.observableArrayList();
-            ResultSet rs = conn.createStatement().executeQuery("select * from TPaciente");
+            String sqlar = "exec uspVer " + IDpersonal;
+            ResultSet rs = conn.createStatement().executeQuery(sqlar);
+
             while (rs.next()) {
+
                 data.add(new DataPacientesModel1(
                         rs.getString(1),
                         rs.getString(2),
@@ -285,7 +342,15 @@ public class MainwindowController implements Initializable {
                         rs.getString(9),
                         rs.getString(10),
                         rs.getString(11),
-                        rs.getString(12)
+                        rs.getString(12),
+                        rs.getString(13),
+                        rs.getString(14),
+                        rs.getString(15),
+                        rs.getString(16),
+                        rs.getString(17),
+                        rs.getString(18),
+                        rs.getString(19),
+                        rs.getString(20)
                 ));
             }
             T1CNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
@@ -298,7 +363,6 @@ public class MainwindowController implements Initializable {
 
             TTPacientes1.setItems(null);
             TTPacientes1.setItems(data);
-
             //Filtered primer tab
             FilteredList<DataPacientesModel1> filtror = new FilteredList<>(data, b -> true);
             txtPPNombre.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -323,48 +387,7 @@ public class MainwindowController implements Initializable {
             SortedList<DataPacientesModel1> sortedData = new SortedList<>(filtror);
             sortedData.comparatorProperty().bind(TTPacientes1.comparatorProperty());
             TTPacientes1.setItems(sortedData);
-            
-        } catch (SQLException e) {
-            System.out.println(e);
-            e.printStackTrace(System.out);
-        }
-    }
-
-    @FXML
-    private void ActualizarTablaPacientes1(ActionEvent event) {
-        dc = new DBConnector();
-        try {
-            Connection conn = dc.Connect();
-            data = FXCollections.observableArrayList();
-            ResultSet rs = conn.createStatement().executeQuery("select * from TPaciente");
-
-            while (rs.next()) {
-
-                data.add(new DataPacientesModel1(
-                        rs.getString(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4),
-                        rs.getString(5),
-                        rs.getString(6),
-                        rs.getString(7),
-                        rs.getString(8),
-                        rs.getString(9),
-                        rs.getString(10),
-                        rs.getString(11),
-                        rs.getString(12)
-                ));
-            }
-            T1CNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-            T1CApellido.setCellValueFactory(new PropertyValueFactory<>("apellido"));
-            T1CDNI.setCellValueFactory(new PropertyValueFactory<>("dni"));
-            T1CCelular.setCellValueFactory(new PropertyValueFactory<>("celular"));
-            T1CEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
-            T1CSexo.setCellValueFactory(new PropertyValueFactory<>("sexo"));
-            T1CEdad.setCellValueFactory(new PropertyValueFactory<>("fechanac"));
-
-            TTPacientes1.setItems(null);
-            TTPacientes1.setItems(data);
+            //conn.close();
         } catch (SQLException e) {
             System.out.println(e);
             e.printStackTrace(System.out);
@@ -379,19 +402,60 @@ public class MainwindowController implements Initializable {
     private void EditarDatosPaciente(ActionEvent event) {
     }
 
-
     @FXML
     private void LimpiarDatos2(ActionEvent event) {
     }
 
-
     @FXML
     private void ConfirmarDatosdePaciente2(ActionEvent event) {
+        SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
         String DP_DNI = txtDNI2.getText();
         String DP_APMat = txtAPMat2.getText();
         String DP_APPat = txtPatern2.getText();
-        if(txtDNI2.getText().equals("")){
-            
+        String DP_Nom = txtNombres2.getText();
+        String DP_Correo = txtCorreoE2.getText();
+        String DP_Tel = txtTelef2.getText();
+        String DP_Peso = txtPeso2.getText();
+        String DP_Altura = txtAltura2.getText();
+        LocalDate date = dateNacPac2.getValue();
+        String DP_Sintomas = txtASintomas2.getText();
+        String DP_Precio = lblPrecioPrueba2.getText();
+        LocalDate date2 = datePrueba2.getValue();
+
+        String DP_Nacionaildad = (String) cmbNacionac2.getValue();
+        String DP_Distrito = (String) cmbDistrito2.getValue();
+        String DP_TipoPrueba = (String) cmbTipoPrueba2.getValue();
+
+        if (DP_Sintomas.isEmpty() || DP_DNI.isEmpty() || DP_APMat.isEmpty() || DP_APPat.isEmpty() || DP_Nom.isEmpty() || DP_Correo.isEmpty() || DP_Tel.isEmpty() || DP_Peso.isEmpty() || DP_Altura.isEmpty() || date == null || cmbNacionac2.getSelectionModel().isEmpty() || cmbDistrito2.getSelectionModel().isEmpty() || cmbTipoPrueba2.getSelectionModel().isEmpty() || date2 == null) {
+            lblMensaje2.setText("Uno o mas de los campos no esta llenado");
+        } else {
+            System.out.println("Areas de texto completas, comprobando CMBs. . .");
+            if (DP_Nacionaildad.isEmpty() || DP_Distrito.isEmpty() || DP_TipoPrueba.isEmpty()) {
+                lblMensaje2.setText("La seleccion de los desplegables no puede estar vacia.");
+            } else {
+                System.out.println("CMBs comprobados, agregando a la base de datos. . .");
+                String PPeriodica = null;
+                if (chkPeriodica2.isSelected()) {
+                    PPeriodica = "SI";
+                } else {
+                    PPeriodica = "NO";
+                }
+                dc = new DBConnector();
+                
+                try{
+                    Connection conn = dc.Connect();
+                    String SQLStatement = "select count(*) as total from TPaciente";
+                    ResultSet rs = conn.createStatement().executeQuery(SQLStatement);
+                    int pacientes = 0;
+                    while (rs.next()){
+                        pacientes = rs.getInt(1);
+                    }
+                    System.out.println(pacientes+1);
+                }catch(SQLException e){
+                    System.out.println(e);
+                }
+            }
+
         }
     }
 
@@ -453,6 +517,38 @@ public class MainwindowController implements Initializable {
 
     @FXML
     private void ActualizarGraficoInfectadosPordistrito7(ActionEvent event) {
+    }
+
+    @FXML
+    private void TabTratamientosChange(Event event) {
+
+    }
+
+    @FXML
+    private void llenarPacientesTab1(MouseEvent event) {
+        try {
+            lblIDpaciente11.setText(TTPacientes1.getSelectionModel().getSelectedItem().getidpaciente());
+            txtDateTratamiento.setText(TTPacientes1.getSelectionModel().getSelectedItem().getfechahistorial());
+            txtflDesTratamiento.setText(TTPacientes1.getSelectionModel().getSelectedItem().getdesctratamiento());
+            txtSintomas1.setText(TTPacientes1.getSelectionModel().getSelectedItem().getsintomas());
+            txtFacctRisk1.setText(TTPacientes1.getSelectionModel().getSelectedItem().getdescriesgos());
+            txtMedicacion1.setText(TTPacientes1.getSelectionModel().getSelectedItem().getdescmedicamentos());
+        } catch (NullPointerException nulo) {
+            System.out.println("Error de datos al pasar");
+        }
+    }
+
+    @FXML
+    private void cmbTipoPruebaPrices(ActionEvent event) {
+        System.out.println(cmbTipoPrueba2.getValue());
+        if (cmbTipoPrueba2.getValue().equals("Rapida")) {
+            lblPrecioPrueba2.setText("S/ 50");
+        } else if (cmbTipoPrueba2.getValue().equals("Molecular")) {
+            lblPrecioPrueba2.setText("S/ 100");
+        } else if (cmbTipoPrueba2.getValue().equals("Isopada")) {
+            lblPrecioPrueba2.setText("S/ 120");
+        }
+
     }
 
 }
