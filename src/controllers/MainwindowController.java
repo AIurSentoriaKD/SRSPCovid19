@@ -140,11 +140,9 @@ public class MainwindowController implements Initializable {
     @FXML
     private DatePicker dateFechaTratamiento3;
     @FXML
-    private Label lblIdPruebaS3;
-    @FXML
     private Button btnProcRiesgos3;
     @FXML
-    private ListView<?> lstListaRiesgos3;
+    private ListView<String> lstListaRiesgos3;
     @FXML
     private Button btnAddRisk3;
     @FXML
@@ -152,15 +150,15 @@ public class MainwindowController implements Initializable {
     @FXML
     private Button btnProcMedicacion3;
     @FXML
-    private ListView<?> lstRiesgosDePaciente3;
+    private ListView<String> lstRiesgosDePaciente3;
     @FXML
-    private ListView<?> lstMedicamentos3;
+    private ListView<String> lstMedicamentos3;
     @FXML
     private Button btnAgregarMedicamento3;
     @FXML
     private Button btnQuitarMedicamento3;
     @FXML
-    private ListView<?> lstMEdicamentosRetadosPaciente3;
+    private ListView<String> lstMEdicamentosRetadosPaciente3;
     @FXML
     private Button btnFinalizarTratamiento3;
     @FXML
@@ -280,11 +278,28 @@ public class MainwindowController implements Initializable {
     @FXML
     private TextArea txtfldSintomas5;
 
+    //Observable Lists de Factores de Riesgo
+    ObservableList<String> lriesgo = FXCollections.observableArrayList("Infeccion", "Asfixia", "Desmayo", "Alergia");
+    ObservableList<String> priesgo = FXCollections.observableArrayList(); //no creo que sea necesaria esta linea
+    //Observable Lists de Medicamentos
+    ObservableList<String> lmedicamentos = FXCollections.observableArrayList("Paracetamol", "Amoxicilina", "Ivermectina", "Panadol");
+    ObservableList<String> pmedicamentos = FXCollections.observableArrayList();
+    @FXML
+    private TextField idhistorial3;
+    @FXML
+    private TextField idprueba3;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
+        //Inicializa la lista de riesgos
+        lstListaRiesgos3.setItems(lriesgo);
+        //Inicializa la lista de medicamentos
+        lstMedicamentos3.setItems(lmedicamentos);
+
         dc = new DBConnector();
         //inicializando comoboxes tab2
         List<String> Nacionalidadescmb = new ArrayList<>();
@@ -441,17 +456,17 @@ public class MainwindowController implements Initializable {
                     PPeriodica = "NO";
                 }
                 dc = new DBConnector();
-                
-                try{
+
+                try {
                     Connection conn = dc.Connect();
                     String SQLStatement = "select count(*) as total from TPaciente";
                     ResultSet rs = conn.createStatement().executeQuery(SQLStatement);
                     int pacientes = 0;
-                    while (rs.next()){
+                    while (rs.next()) {
                         pacientes = rs.getInt(1);
                     }
-                    System.out.println(pacientes+1);
-                }catch(SQLException e){
+                    System.out.println(pacientes + 1);
+                } catch (SQLException e) {
                     System.out.println(e);
                 }
             }
@@ -469,10 +484,23 @@ public class MainwindowController implements Initializable {
 
     @FXML
     private void AddRisk3LtoL(ActionEvent event) {
+
+        //es para que no diga null en el listview
+        if (lstRiesgosDePaciente3.getItems().isEmpty()) {
+            lstListaRiesgos3.getSelectionModel().getSelectedItem().trim();
+        }
+        //Si se repiten los elementos seleccionados entonces ya no los agrega
+        if (lstRiesgosDePaciente3.getItems().contains(lstListaRiesgos3.getSelectionModel().getSelectedItem())) {
+            lstListaRiesgos3.getSelectionModel().getSelectedItem().trim();
+        } else {
+            lstRiesgosDePaciente3.getItems().add(lstListaRiesgos3.getSelectionModel().getSelectedItem());
+        }
+
     }
 
     @FXML
     private void RemoveRisk3LtoL(ActionEvent event) {
+         lstRiesgosDePaciente3.getItems().remove(lstRiesgosDePaciente3.getSelectionModel().getSelectedItem());
     }
 
     @FXML
@@ -481,10 +509,22 @@ public class MainwindowController implements Initializable {
 
     @FXML
     private void AddMedicament3(ActionEvent event) {
+         //es para que no diga null en el listview
+        if(lstMEdicamentosRetadosPaciente3.getItems().isEmpty()){
+            lstMedicamentos3.getSelectionModel().getSelectedItem().trim();
+        }
+        //Si se repiten los elementos seleccionados entonces ya no los agrega
+        if(lstMEdicamentosRetadosPaciente3.getItems().contains(lstMedicamentos3.getSelectionModel().getSelectedItem())){
+            lstMedicamentos3.getSelectionModel().getSelectedItem().trim(); //con esta linea no agrega nada
+        }
+        else{
+            lstMEdicamentosRetadosPaciente3.getItems().add(lstMedicamentos3.getSelectionModel().getSelectedItem());
+        }
     }
 
     @FXML
     private void RemoveMedicament3(ActionEvent event) {
+         lstMEdicamentosRetadosPaciente3.getItems().remove(lstMEdicamentosRetadosPaciente3.getSelectionModel().getSelectedItem());
     }
 
     @FXML
