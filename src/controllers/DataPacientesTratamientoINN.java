@@ -16,16 +16,19 @@ public class DataPacientesTratamientoINN {
 
     StringProperty idpaciente,
             nombre,
-            idhistorial;
+            idhistorial,
+            idprueba;
 
     public DataPacientesTratamientoINN(
             String idpaciente,
             String nombre,
-            String idhistorial
+            String idhistorial,
+            String idprueba
     ) {
         this.idpaciente = new SimpleStringProperty(idpaciente);
         this.nombre = new SimpleStringProperty(nombre);
         this.idhistorial = new SimpleStringProperty(idhistorial);
+        this.idprueba = new SimpleStringProperty(idprueba);
     }
 
     //GETTERS
@@ -38,6 +41,9 @@ public class DataPacientesTratamientoINN {
     public String getidhistorial(){
         return idhistorial.get();
     }
+    public String getidprueba(){
+        return idprueba.get();
+    }
     //SETTERS
     public void setidpaciente(String value){
         idpaciente.set(value);
@@ -48,6 +54,9 @@ public class DataPacientesTratamientoINN {
     public void setidhistorial(String value){
         idhistorial.set(value);
     }
+    public void setidprueba(String value){
+        idprueba.set(value);
+    }
     //PROPERTY
     public StringProperty idpacienteProperty(){
         return idpaciente;
@@ -57,5 +66,8 @@ public class DataPacientesTratamientoINN {
     }
     public StringProperty idhistorialProperty(){
         return idhistorial;
+    }
+    public StringProperty idpruebaProperty(){
+        return idprueba;
     }
 }

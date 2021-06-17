@@ -7,12 +7,14 @@ package controllers;
 
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -52,7 +54,7 @@ public class MainwindowController implements Initializable {
 
     private DBConnector dc;
     private ObservableList<DataPacientesModel1> data;
-
+    private ObservableList<DataPacientesTratamientoINN> dataPacientesInn;
     @FXML
     private Tab tabDetallesPacientes;
     @FXML
@@ -124,13 +126,13 @@ public class MainwindowController implements Initializable {
     @FXML
     private Tab TabTratamientos;
     @FXML
-    private TableView<?> tblPacRec3;
+    private TableView<DataPacientesTratamientoINN> tblPacRec3;
     @FXML
-    private TableColumn<?, ?> T2CIDPaciente;
+    private TableColumn<DataPacientesTratamientoINN, String> T2CIDPaciente;
     @FXML
-    private TableColumn<?, ?> T2CNombre;
+    private TableColumn<DataPacientesTratamientoINN, String> T2CNombre;
     @FXML
-    private TableColumn<?, ?> T2IDPrueba;
+    private TableColumn<DataPacientesTratamientoINN, String> T2IDPrueba;
     @FXML
     private Button btnActualizarTabla2_3;
     @FXML
@@ -138,17 +140,11 @@ public class MainwindowController implements Initializable {
     @FXML
     private TextArea txtAreaDescTrat3;
     @FXML
-    private DatePicker dateFechaTratamiento3;
-    @FXML
-    private Button btnProcRiesgos3;
-    @FXML
     private ListView<String> lstListaRiesgos3;
     @FXML
     private Button btnAddRisk3;
     @FXML
     private Button btnRemoveRisk3;
-    @FXML
-    private Button btnProcMedicacion3;
     @FXML
     private ListView<String> lstRiesgosDePaciente3;
     @FXML
@@ -288,6 +284,10 @@ public class MainwindowController implements Initializable {
     private TextField idhistorial3;
     @FXML
     private TextField idprueba3;
+    @FXML
+    private ComboBox<String> cmbSexo2;
+    @FXML
+    private TextField dateFechaHistorial;
 
     /**
      * Initializes the controller class.
@@ -301,6 +301,7 @@ public class MainwindowController implements Initializable {
         lstMedicamentos3.setItems(lmedicamentos);
 
         dc = new DBConnector();
+
         //inicializando comoboxes tab2
         List<String> Nacionalidadescmb = new ArrayList<>();
         Nacionalidadescmb.add("Peru");
@@ -326,6 +327,13 @@ public class MainwindowController implements Initializable {
         ObservableList pruebascmblist = FXCollections.observableList(tipospruebacmb);
         cmbTipoPrueba2.getItems().clear();
         cmbTipoPrueba2.setItems(pruebascmblist);
+
+        List<String> sexoscmb = new ArrayList<>();
+        sexoscmb.add("M");
+        sexoscmb.add("F");
+        ObservableList sexocmbList = FXCollections.observableList(sexoscmb);
+        cmbSexo2.getItems().clear();
+        cmbSexo2.setItems(sexocmbList);
 
     }
 
@@ -378,6 +386,7 @@ public class MainwindowController implements Initializable {
 
             TTPacientes1.setItems(null);
             TTPacientes1.setItems(data);
+
             //Filtered primer tab
             FilteredList<DataPacientesModel1> filtror = new FilteredList<>(data, b -> true);
             txtPPNombre.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -423,19 +432,34 @@ public class MainwindowController implements Initializable {
 
     @FXML
     private void ConfirmarDatosdePaciente2(ActionEvent event) {
+
+        //IDPERSONAL
+        Stage stage = (Stage) btnActualizarT1.getScene().getWindow();
+        String title = stage.getTitle();
+        //System.out.println(title);
+        String[] parts = title.split(" ");
+        String IDpersonal = parts[0];
+        int idpersonal = Integer.parseInt(IDpersonal);
+
+        //DATA PACIENTE
         SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
         String DP_DNI = txtDNI2.getText();
         String DP_APMat = txtAPMat2.getText();
         String DP_APPat = txtPatern2.getText();
         String DP_Nom = txtNombres2.getText();
+        String DP_Sexo = cmbSexo2.getValue();
         String DP_Correo = txtCorreoE2.getText();
         String DP_Tel = txtTelef2.getText();
         String DP_Peso = txtPeso2.getText();
         String DP_Altura = txtAltura2.getText();
+
+        java.sql.Date dates = java.sql.Date.valueOf(dateNacPac2.getValue());
+
         LocalDate date = dateNacPac2.getValue();
         String DP_Sintomas = txtASintomas2.getText();
         String DP_Precio = lblPrecioPrueba2.getText();
-        LocalDate date2 = datePrueba2.getValue();
+
+        String date2 = datePrueba2.valueProperty().get().toString();
 
         String DP_Nacionaildad = (String) cmbNacionac2.getValue();
         String DP_Distrito = (String) cmbDistrito2.getValue();
@@ -465,7 +489,86 @@ public class MainwindowController implements Initializable {
                     while (rs.next()) {
                         pacientes = rs.getInt(1);
                     }
-                    System.out.println(pacientes + 1);
+                    pacientes = pacientes + 1;
+                    String datapaciente = "INSERT INTO TPaciente (IdPaciente,Nombre,Apellido,DNI,Celular,Email,Sexo,FechaNac,Peso,Altura,Nacionalidad,Distrito) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+                    String datahistorial = "INSERT INTO THistorial (IdHistorial, Fecha_Historial, Sintomas, IdPaciente, IdPersonal) VALUES(?,?,?,?,?)";
+                    String dataprueba = "INSERT INTO TPrueba (IdPrueba, Costo, Resultado, Tipo, Fecha_Prueba, Periodica, IdHistorial) VALUES(?,?,?,?,?,?,?)";
+                    //STRING DE INSERT EN LA TABLA PACIENTES HISTORIAL Y PRUEBA
+                    Connection con = dc.Connect();
+
+                    try {
+                        PreparedStatement ps = con.prepareStatement(datapaciente);
+                        ps.setInt(1, pacientes);
+                        ps.setString(2, DP_Nom);
+                        ps.setString(3, DP_APPat + " " + DP_APMat);
+                        ps.setString(4, DP_DNI);
+                        ps.setString(5, DP_Tel);
+                        ps.setString(6, DP_Correo);
+                        ps.setString(7, DP_Sexo);
+                        ps.setDate(8, dates);
+                        ps.setFloat(9, Integer.valueOf(DP_Peso));
+                        ps.setFloat(10, Integer.valueOf(DP_Altura));
+                        ps.setString(11, DP_Nacionaildad);
+                        ps.setString(12, DP_Distrito);
+                        ps.executeUpdate();
+                        System.out.println("Se Registro paciente!!!");
+
+                    } catch (SQLException e) {
+                        System.out.println("Error insertando paciente");
+                        System.out.println(e);
+                    }
+
+                    SQLStatement = "select count(*) as total from THistorial";
+                    rs = conn.createStatement().executeQuery(SQLStatement);
+                    int historiales = 0;
+                    while (rs.next()) {
+                        historiales = rs.getInt(1);
+                    }
+                    historiales = historiales + 1;
+
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    Date dateactual = new Date(System.currentTimeMillis());
+                    System.out.println(formatter.format(dateactual));
+                    String fecha_act = formatter.format(dateactual);
+                    System.out.println(fecha_act);
+
+                    try {
+                        PreparedStatement ps = con.prepareStatement(datahistorial);
+                        ps.setInt(1, historiales);
+                        ps.setString(2, fecha_act);
+                        ps.setString(3, DP_Sintomas);
+                        ps.setInt(4, pacientes);
+                        ps.setInt(5, idpersonal);
+                        ps.executeUpdate();
+                        System.out.println("DATA HISTORIAL AGREGADA CORRECTAMENTE!!");
+                    } catch (SQLException e) {
+                        System.out.println("Error insertando historial");
+                        System.out.println(e);
+                    }
+
+                    SQLStatement = "select count(*) as total from TPrueba";
+                    rs = conn.createStatement().executeQuery(SQLStatement);
+                    int pruebas = 0;
+                    while (rs.next()) {
+                        pruebas = rs.getInt(1);
+                    }
+                    pruebas = pruebas + 1;
+
+                    try {
+                        PreparedStatement ps = con.prepareStatement(dataprueba);
+                        ps.setInt(1, pruebas);
+                        ps.setString(2, DP_Precio);
+                        ps.setString(3, "Evaluando");
+                        ps.setString(4, DP_TipoPrueba);
+                        ps.setString(5, fecha_act);
+                        ps.setString(6, PPeriodica);
+                        ps.setInt(7, historiales);
+                        ps.executeUpdate();
+                        System.out.println("DATA PRUEBA AGREGADA CORRECTAMENTE!!");
+                    } catch (SQLException e) {
+                        System.out.println("error insertando prueba!!");
+                        System.out.println(e);
+                    }
                 } catch (SQLException e) {
                     System.out.println(e);
                 }
@@ -476,10 +579,61 @@ public class MainwindowController implements Initializable {
 
     @FXML
     private void ActualizarTablaPacRac3(ActionEvent event) {
-    }
+        dc = new DBConnector();
+        try {
+            Connection conn = dc.Connect();
+            Stage stage = (Stage) btnActualizarTabla2_3.getScene().getWindow();
+            String title = stage.getTitle();
+            //System.out.println(title);
+            String[] parts = title.split(" ");
+            String IDpersonal = parts[0];
+            dataPacientesInn = FXCollections.observableArrayList();
 
-    @FXML
-    private void GuardarTratamientoEnableRiskFact3(ActionEvent event) {
+            String sqlar = "EXEC pacientereciente " + IDpersonal;
+            ResultSet rs = conn.createStatement().executeQuery(sqlar);
+            while (rs.next()) {
+                dataPacientesInn.add(new DataPacientesTratamientoINN(
+                        rs.getString(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4)
+                ));
+            }
+            //TAB 3 DATA PACIENTES RECIENTES ORDENADO POR LAST INSERTED
+
+            T2CIDPaciente.setCellValueFactory(new PropertyValueFactory<>("idpaciente"));
+            T2CNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+            T2IDPrueba.setCellValueFactory(new PropertyValueFactory<>("idhistorial"));
+
+            tblPacRec3.setItems(null);
+            tblPacRec3.setItems(dataPacientesInn);
+
+            //Filtered tercer tab
+            FilteredList<DataPacientesTratamientoINN> filtror = new FilteredList<>(dataPacientesInn, b -> true);
+            txtBuscaNombre3.textProperty().addListener((observable, oldValue, newValue) -> {
+                filtror.setPredicate(DataPacientesTratamientoINN -> {
+                    if (newValue == null || newValue.isEmpty()) {
+                        return true;
+                    }
+                    String lowercaseFilter = newValue.toLowerCase();
+
+                    //int idcliente = ModelTable.getidcliente().toLowerCase().indexOf(lowercaseFilter);
+                    if (DataPacientesTratamientoINN.getnombre().toLowerCase().indexOf(lowercaseFilter) != -1) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+
+                });
+            });
+
+            SortedList<DataPacientesTratamientoINN> sortedData = new SortedList<>(filtror);
+            sortedData.comparatorProperty().bind(tblPacRec3.comparatorProperty());
+            tblPacRec3.setItems(sortedData);
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
     }
 
     @FXML
@@ -500,39 +654,98 @@ public class MainwindowController implements Initializable {
 
     @FXML
     private void RemoveRisk3LtoL(ActionEvent event) {
-         lstRiesgosDePaciente3.getItems().remove(lstRiesgosDePaciente3.getSelectionModel().getSelectedItem());
-    }
-
-    @FXML
-    private void GuardarRiskFactsEnableMedicacion3(ActionEvent event) {
+        lstRiesgosDePaciente3.getItems().remove(lstRiesgosDePaciente3.getSelectionModel().getSelectedItem());
     }
 
     @FXML
     private void AddMedicament3(ActionEvent event) {
-         //es para que no diga null en el listview
-        if(lstMEdicamentosRetadosPaciente3.getItems().isEmpty()){
+        //es para que no diga null en el listview
+        if (lstMEdicamentosRetadosPaciente3.getItems().isEmpty()) {
             lstMedicamentos3.getSelectionModel().getSelectedItem().trim();
         }
         //Si se repiten los elementos seleccionados entonces ya no los agrega
-        if(lstMEdicamentosRetadosPaciente3.getItems().contains(lstMedicamentos3.getSelectionModel().getSelectedItem())){
+        if (lstMEdicamentosRetadosPaciente3.getItems().contains(lstMedicamentos3.getSelectionModel().getSelectedItem())) {
             lstMedicamentos3.getSelectionModel().getSelectedItem().trim(); //con esta linea no agrega nada
-        }
-        else{
+        } else {
             lstMEdicamentosRetadosPaciente3.getItems().add(lstMedicamentos3.getSelectionModel().getSelectedItem());
         }
     }
 
     @FXML
     private void RemoveMedicament3(ActionEvent event) {
-         lstMEdicamentosRetadosPaciente3.getItems().remove(lstMEdicamentosRetadosPaciente3.getSelectionModel().getSelectedItem());
+        lstMEdicamentosRetadosPaciente3.getItems().remove(lstMEdicamentosRetadosPaciente3.getSelectionModel().getSelectedItem());
     }
 
     @FXML
     private void FinalizarTratamientoSaveALLDATA3(ActionEvent event) {
+        //ESTO ES
+        String itemRiesgos = "";
+        String itemMedicamentos = "";
+        String itemTratamiento = "";
+        //convierte los elementos del listview de riesgos del paciente a 1 string
+        for (String r : lstRiesgosDePaciente3.getItems()) {
+            itemRiesgos += lstRiesgosDePaciente3.itemsProperty().toString() + ", ";
+        }
+        //convierte los elementos del listview de medicamentos del paciente a 1 string
+        for (String r : lstMEdicamentosRetadosPaciente3.getItems()) {
+            itemRiesgos += lstMEdicamentosRetadosPaciente3.itemsProperty().toString() + ", ";
+        }
+        itemTratamiento = txtAreaDescTrat3.getText();
+
+        String idhistoria = idhistorial3.getText();
+        int idhistorial = Integer.parseInt(idhistoria);
+        try {
+            dc = new DBConnector();
+            Connection conn = dc.Connect();
+
+            String SQLStatement = "select count(*) as total from TTratamiento";
+            ResultSet rs = conn.createStatement().executeQuery(SQLStatement);
+            int tratamientos = 0;
+            while (rs.next()) {
+                tratamientos = rs.getInt(1);
+            }
+            tratamientos = tratamientos + 1;
+            
+            String sql = "INSERT INTO TTratamiento (IdTratamiento, Desc_Riesgo, Desc_Medicamentos, Desc_Tratamiento, IdHistorial) values(?,?,?,?,?)";
+
+            try {
+                
+                
+                //FIXEAR, FALTA EL ID PRUEBA ACORDARSE DE LA GENERACION DE LA TABLA DE TRATAMIENTO
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ps.setInt(1, tratamientos);
+                ps.setString(2, itemRiesgos);
+                ps.setString(3, itemMedicamentos);
+                ps.setString(4, itemTratamiento);
+                ps.setInt(5, idhistorial);
+                ps.executeUpdate();
+                System.out.println("DATA TRATAMIENTO AGREGADA CORRECTAMENTE!!");
+            } catch (SQLException e) {
+                System.out.println("error insertando TRATAMIENTO!!");
+                System.out.println(e);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+    }
+    private void llenartratamientoT3(MouseEvent event) {
+        try{
+            idhistorial3.setText(tblPacRec3.getSelectionModel().getSelectedItem().getidhistorial());
+            idprueba3.setText(tblPacRec3.getSelectionModel().getSelectedItem().getidprueba());
+        }catch(NullPointerException e){
+            System.out.println("Error de datos al pasar: NULL");
+        }
     }
 
     @FXML
     private void ActualizarTabla3_4(ActionEvent event) {
+        
+        
+        
+        
+        
     }
 
     @FXML
@@ -591,4 +804,5 @@ public class MainwindowController implements Initializable {
 
     }
 
+   
 }

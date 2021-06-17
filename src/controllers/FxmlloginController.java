@@ -77,7 +77,6 @@ public class FxmlloginController implements Initializable {
                     userid = rs.getString("IdPersonal");
                     Nombre = rs.getString("Nombre");
                     Apellido = rs.getString("apellido");
-
                 }
                 if (txtUsername.equals(userdb) && txtPassword.equals(pass)) {
                     System.out.println("Acceso Autorizado");
