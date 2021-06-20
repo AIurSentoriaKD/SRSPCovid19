@@ -55,6 +55,9 @@ public class MainwindowController implements Initializable {
     private DBConnector dc;
     private ObservableList<DataPacientesModel1> data;
     private ObservableList<DataPacientesTratamientoINN> dataPacientesInn;
+    private ObservableList<DataPruebaTPacientes> datapruebapaciente;
+    private ObservableList<DataPruebaModel> datapruebas;
+
     @FXML
     private Tab tabDetallesPacientes;
     @FXML
@@ -160,17 +163,17 @@ public class MainwindowController implements Initializable {
     @FXML
     private Tab TabPruebas;
     @FXML
-    private TableView<?> T3HistorlalYPaciente;
+    private TableView<DataPruebaTPacientes> T3HistorlalYPaciente;
     @FXML
-    private TableColumn<?, ?> T3CIDHistorial;
+    private TableColumn<DataPruebaTPacientes, String> T3CIDHistorial;
     @FXML
-    private TableColumn<?, ?> T3CIDPaciente;
+    private TableColumn<DataPruebaTPacientes, String> T3CIDPaciente;
     @FXML
-    private TableColumn<?, ?> T3CNombre;
+    private TableColumn<DataPruebaTPacientes, String> T3CNombre;
     @FXML
-    private TableColumn<?, ?> T3CFechaInscrito;
+    private TableColumn<DataPruebaTPacientes, String> T3CFechaInscrito;
     @FXML
-    private TableColumn<?, ?> T3CEdad;
+    private TableColumn<DataPruebaTPacientes, String> T3CEdad;
     @FXML
     private TextField txtFiltroNombre4;
     @FXML
@@ -186,19 +189,19 @@ public class MainwindowController implements Initializable {
     @FXML
     private Button btnCancelarEstadoPrueba4;
     @FXML
-    private TableView<?> T4DatosdePruebas4;
+    private TableView<DataPruebaModel> T4DatosdePruebas4;
     @FXML
-    private TableColumn<?, ?> T4CIdPrueba;
+    private TableColumn<DataPruebaModel, String> T4CIdPrueba;
     @FXML
-    private TableColumn<?, ?> T4CCosto;
+    private TableColumn<DataPruebaModel, String> T4CCosto;
     @FXML
-    private TableColumn<?, ?> T4CResultado;
+    private TableColumn<DataPruebaModel, String> T4CResultado;
     @FXML
-    private TableColumn<?, ?> T4CTipo;
+    private TableColumn<DataPruebaModel, String> T4CTipo;
     @FXML
-    private TableColumn<?, ?> T4CFechaPrueba;
+    private TableColumn<DataPruebaModel, String> T4CFechaPrueba;
     @FXML
-    private TableColumn<?, ?> T4CPeriodica;
+    private TableColumn<DataPruebaModel, String> T4CPeriodica;
     @FXML
     private Tab TabSeguimiento;
     @FXML
@@ -288,6 +291,8 @@ public class MainwindowController implements Initializable {
     private ComboBox<String> cmbSexo2;
     @FXML
     private TextField dateFechaHistorial;
+    @FXML
+    private TextField txtT4Periodica;
 
     /**
      * Initializes the controller class.
@@ -684,12 +689,16 @@ public class MainwindowController implements Initializable {
         String itemTratamiento = "";
         //convierte los elementos del listview de riesgos del paciente a 1 string
         for (String r : lstRiesgosDePaciente3.getItems()) {
-            itemRiesgos += lstRiesgosDePaciente3.itemsProperty().toString() + ", ";
+            //itemRiesgos += lstRiesgosDePaciente3.itemsProperty().toString() + ", ";
+            itemRiesgos += lstRiesgosDePaciente3.itemsProperty().getValue().toString() + ", "; //puede ser
         }
+
         //convierte los elementos del listview de medicamentos del paciente a 1 string
         for (String r : lstMEdicamentosRetadosPaciente3.getItems()) {
-            itemRiesgos += lstMEdicamentosRetadosPaciente3.itemsProperty().toString() + ", ";
+            //itemMedicamentos += lstMEdicamentosRetadosPaciente3.itemsProperty().toString() + ", ";
+            itemMedicamentos += lstMEdicamentosRetadosPaciente3.itemsProperty().getValue().toString() + ", "; //puede ser
         }
+
         itemTratamiento = txtAreaDescTrat3.getText();
 
         String idhistoria = idhistorial3.getText();
@@ -705,12 +714,11 @@ public class MainwindowController implements Initializable {
                 tratamientos = rs.getInt(1);
             }
             tratamientos = tratamientos + 1;
-            
+
             String sql = "INSERT INTO TTratamiento (IdTratamiento, Desc_Riesgo, Desc_Medicamentos, Desc_Tratamiento, IdHistorial) values(?,?,?,?,?)";
 
             try {
-                
-                
+
                 //FIXEAR, FALTA EL ID PRUEBA ACORDARSE DE LA GENERACION DE LA TABLA DE TRATAMIENTO
                 PreparedStatement ps = conn.prepareStatement(sql);
                 ps.setInt(1, tratamientos);
@@ -730,22 +738,45 @@ public class MainwindowController implements Initializable {
         }
 
     }
-    private void llenartratamientoT3(MouseEvent event) {
-        try{
-            idhistorial3.setText(tblPacRec3.getSelectionModel().getSelectedItem().getidhistorial());
-            idprueba3.setText(tblPacRec3.getSelectionModel().getSelectedItem().getidprueba());
-        }catch(NullPointerException e){
-            System.out.println("Error de datos al pasar: NULL");
-        }
-    }
 
     @FXML
     private void ActualizarTabla3_4(ActionEvent event) {
-        
-        
-        
-        
-        
+        dc = new DBConnector();
+
+        try {
+            Connection conn = dc.Connect();
+            Stage stage = (Stage) btnActualizarTabla4.getScene().getWindow();
+            String title = stage.getTitle();
+            //System.out.println(title);
+            String[] parts = title.split(" ");
+            String IDpersonal = parts[0];
+            System.out.println(IDpersonal);
+            String sqlar = "EXEC uspListar " + IDpersonal;
+            ResultSet rs = conn.createStatement().executeQuery(sqlar);
+            while (rs.next()) {
+                datapruebapaciente.add(new DataPruebaTPacientes(
+                        rs.getString(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5)
+                ));
+            }
+
+            //TAB 4 DATA PACIENTES+HISTORIAL Y EDAD
+            T3CIDHistorial.setCellValueFactory(new PropertyValueFactory<>("idhistorial"));
+            T3CIDPaciente.setCellValueFactory(new PropertyValueFactory<>("idpaciente"));
+            T3CNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+            T3CFechaInscrito.setCellValueFactory(new PropertyValueFactory<>("fechainscrito"));
+            T3CEdad.setCellValueFactory(new PropertyValueFactory<>("edad"));
+
+            T3HistorlalYPaciente.setItems(null);
+            T3HistorlalYPaciente.setItems(datapruebapaciente);
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
     }
 
     @FXML
@@ -804,5 +835,75 @@ public class MainwindowController implements Initializable {
 
     }
 
-   
+    @FXML
+    private void Tab3PassPacRecTOfields(MouseEvent event) {
+
+        try {
+            idhistorial3.setText(tblPacRec3.getSelectionModel().getSelectedItem().getidhistorial());
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date dateactual = new Date(System.currentTimeMillis());
+            System.out.println(formatter.format(dateactual));
+            String fecha_act = formatter.format(dateactual);
+            System.out.println(fecha_act);
+
+            dateFechaHistorial.setText(fecha_act);
+
+            idprueba3.setText(tblPacRec3.getSelectionModel().getSelectedItem().getidprueba());
+
+        } catch (NullPointerException e) {
+            System.out.println("Error de datos al pasar");
+        }
+
+    }
+
+    @FXML
+    private void Tab4PacientesPassData(MouseEvent event) {
+        dc = new DBConnector();
+        try {
+            String idhistorial = T3HistorlalYPaciente.getSelectionModel().getSelectedItem().getidhistorial();
+
+            Connection conn = dc.Connect();
+
+            String sql = "select * from tprueba where idhistorial = " + idhistorial;
+            try {
+                ResultSet rs = conn.createStatement().executeQuery(sql);
+                while (rs.next()) {
+                    datapruebas.add(new DataPruebaModel(
+                            rs.getString(1),
+                            rs.getString(2),
+                            rs.getString(3),
+                            rs.getString(4),
+                            rs.getString(5),
+                            rs.getString(6),
+                            rs.getString(7)
+                    ));
+                }
+                
+                T4CIdPrueba.setCellValueFactory(new PropertyValueFactory<>("idprueba"));
+                T4CCosto.setCellValueFactory(new PropertyValueFactory<>("costo"));
+                T4CResultado.setCellValueFactory(new PropertyValueFactory<>("resultado"));
+                T4CTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
+                T4CFechaPrueba.setCellValueFactory(new PropertyValueFactory<>("fecha_prueba"));
+                T4CPeriodica.setCellValueFactory(new PropertyValueFactory<>("periodica"));
+                
+                T4DatosdePruebas4.setItems(null);
+                T4DatosdePruebas4.setItems(datapruebas);
+                
+                System.out.println("DATA PRUEBAS OBTENIDA CORRECTAMENTE!!");
+
+            } catch (SQLException e) {
+                System.out.println("Error seleccionando pruebas");
+            }
+
+        } catch (NullPointerException e) {
+            System.out.println("Error de datos al pasar");
+        }
+
+    }
+
+    @FXML
+    private void Tab4T2DataPruebasPacienteSeleccionado(MouseEvent event) {
+    }
+
 }

@@ -389,7 +389,7 @@
                                  <children>
                                     <Pane layoutX="12.0" layoutY="11.0" prefHeight="645.0" prefWidth="337.0">
                                        <children>
-                                          <TableView fx:id="tblPacRec3" layoutX="14.0" layoutY="52.0" prefHeight="490.0" prefWidth="312.0">
+                                          <TableView fx:id="tblPacRec3" layoutX="14.0" layoutY="52.0" onMouseClicked="#Tab3PassPacRecTOfields" prefHeight="490.0" prefWidth="312.0">
                                             <columns>
                                               <TableColumn fx:id="T2CIDPaciente" prefWidth="75.0" text="IDPaciente" />
                                               <TableColumn fx:id="T2CNombre" prefWidth="167.0" text="Nombre" />
@@ -500,7 +500,7 @@
                                        <children>
                                           <Pane layoutX="14.0" layoutY="42.0" prefHeight="589.0" prefWidth="514.0">
                                              <children>
-                                                <TableView fx:id="T3HistorlalYPaciente" layoutX="13.0" layoutY="14.0" prefHeight="493.0" prefWidth="488.0">
+                                                <TableView fx:id="T3HistorlalYPaciente" layoutX="13.0" layoutY="14.0" onMouseClicked="#Tab4PacientesPassData" prefHeight="493.0" prefWidth="488.0">
                                                   <columns>
                                                     <TableColumn fx:id="T3CIDHistorial" prefWidth="75.0" text="IDHistorial" />
                                                     <TableColumn fx:id="T3CIDPaciente" prefWidth="75.0" text="IDPaciente" />
@@ -531,7 +531,7 @@
                                                       <Label text="IDPRUEBA:" />
                                                       <Label text="Periodica:" GridPane.rowIndex="1" />
                                                       <TextField fx:id="txtIDPrueba4" GridPane.columnIndex="2" />
-                                                      <TextField GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                      <TextField fx:id="txtT4Periodica" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                                    </children>
                                                 </GridPane>
                                                 <Label layoutX="104.0" layoutY="14.0" text="RESULTADO DE PRUEBA">
@@ -552,7 +552,7 @@
                                           </Label>
                                           <Pane layoutX="573.0" layoutY="42.0" prefHeight="377.0" prefWidth="669.0">
                                              <children>
-                                                <TableView fx:id="T4DatosdePruebas4" layoutX="14.0" layoutY="14.0" prefHeight="354.0" prefWidth="648.0">
+                                                <TableView fx:id="T4DatosdePruebas4" layoutX="14.0" layoutY="14.0" onMouseClicked="#Tab4T2DataPruebasPacienteSeleccionado" prefHeight="354.0" prefWidth="648.0">
                                                   <columns>
                                                     <TableColumn fx:id="T4CIdPrueba" prefWidth="98.0" text="IDPrueba" />
                                                     <TableColumn fx:id="T4CCosto" prefWidth="100.0" text="Costo" />
