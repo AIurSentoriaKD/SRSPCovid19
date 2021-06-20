@@ -25,8 +25,6 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -283,6 +281,9 @@ public class MainwindowController implements Initializable {
     //Observable Lists de Medicamentos
     ObservableList<String> lmedicamentos = FXCollections.observableArrayList("Paracetamol", "Amoxicilina", "Ivermectina", "Panadol");
     ObservableList<String> pmedicamentos = FXCollections.observableArrayList();
+    
+    
+    
     @FXML
     private TextField idhistorial3;
     @FXML
@@ -293,6 +294,8 @@ public class MainwindowController implements Initializable {
     private TextField dateFechaHistorial;
     @FXML
     private TextField txtT4Periodica;
+    @FXML
+    private Label lblMensajeT4;
 
     /**
      * Initializes the controller class.
@@ -339,6 +342,14 @@ public class MainwindowController implements Initializable {
         ObservableList sexocmbList = FXCollections.observableList(sexoscmb);
         cmbSexo2.getItems().clear();
         cmbSexo2.setItems(sexocmbList);
+        
+        List<String> resultadopruebas = new ArrayList<>();
+        resultadopruebas.add("POSITIVO");
+        resultadopruebas.add("NEGATIVO");
+        ObservableList resultadopruebacmb = FXCollections.observableList(resultadopruebas);
+        cmbResultadoPrueba4.getItems().clear();
+        cmbResultadoPrueba4.setItems(resultadopruebacmb);
+        
 
     }
 
@@ -433,6 +444,8 @@ public class MainwindowController implements Initializable {
 
     @FXML
     private void LimpiarDatos2(ActionEvent event) {
+        
+        
     }
 
     @FXML
@@ -533,9 +546,9 @@ public class MainwindowController implements Initializable {
 
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                     Date dateactual = new Date(System.currentTimeMillis());
-                    System.out.println(formatter.format(dateactual));
+                    //System.out.println(formatter.format(dateactual));
                     String fecha_act = formatter.format(dateactual);
-                    System.out.println(fecha_act);
+                    //System.out.println(fecha_act);
 
                     try {
                         PreparedStatement ps = con.prepareStatement(datahistorial);
@@ -747,12 +760,18 @@ public class MainwindowController implements Initializable {
             Connection conn = dc.Connect();
             Stage stage = (Stage) btnActualizarTabla4.getScene().getWindow();
             String title = stage.getTitle();
-            //System.out.println(title);
+
             String[] parts = title.split(" ");
             String IDpersonal = parts[0];
-            System.out.println(IDpersonal);
-            String sqlar = "EXEC uspListar " + IDpersonal;
+
+            //System.out.println(IDpersonal);
+
+            String sqlar = "exec uspListar " + IDpersonal;
+            
+            datapruebapaciente = FXCollections.observableArrayList();
+            
             ResultSet rs = conn.createStatement().executeQuery(sqlar);
+
             while (rs.next()) {
                 datapruebapaciente.add(new DataPruebaTPacientes(
                         rs.getString(1),
@@ -785,6 +804,27 @@ public class MainwindowController implements Initializable {
 
     @FXML
     private void GuardarResultadodePrueba4(ActionEvent event) {
+        
+        String ResultadoPrueba = (String) cmbResultadoPrueba4.getValue();
+        
+        if (ResultadoPrueba.equals("")){
+            lblMensajeT4.setText("Debe seleccionar un valor en 'Resultado'");
+        }else{
+            int idprueba = Integer.parseInt(txtIDPrueba4.getText());
+            
+            String sql = "update tprueba set resultado = ? where idprueba = ?";
+            try{
+                dc = new DBConnector();
+                Connection conn = dc.Connect();
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ps.setString(1, ResultadoPrueba);
+                ps.setInt(2, idprueba);
+                ps.executeUpdate();
+                System.out.println("PRUEBA ACTUALIZADA CORRECTAMENTE!!!!!!");
+            }catch(SQLException e){
+                System.out.println("Error actualiando prueba!!!!");
+            }
+        }
     }
 
     @FXML
@@ -866,6 +906,8 @@ public class MainwindowController implements Initializable {
             Connection conn = dc.Connect();
 
             String sql = "select * from tprueba where idhistorial = " + idhistorial;
+            
+            datapruebas = FXCollections.observableArrayList();
             try {
                 ResultSet rs = conn.createStatement().executeQuery(sql);
                 while (rs.next()) {
@@ -879,17 +921,17 @@ public class MainwindowController implements Initializable {
                             rs.getString(7)
                     ));
                 }
-                
+
                 T4CIdPrueba.setCellValueFactory(new PropertyValueFactory<>("idprueba"));
                 T4CCosto.setCellValueFactory(new PropertyValueFactory<>("costo"));
                 T4CResultado.setCellValueFactory(new PropertyValueFactory<>("resultado"));
                 T4CTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
                 T4CFechaPrueba.setCellValueFactory(new PropertyValueFactory<>("fecha_prueba"));
                 T4CPeriodica.setCellValueFactory(new PropertyValueFactory<>("periodica"));
-                
+
                 T4DatosdePruebas4.setItems(null);
                 T4DatosdePruebas4.setItems(datapruebas);
-                
+
                 System.out.println("DATA PRUEBAS OBTENIDA CORRECTAMENTE!!");
 
             } catch (SQLException e) {
@@ -904,6 +946,16 @@ public class MainwindowController implements Initializable {
 
     @FXML
     private void Tab4T2DataPruebasPacienteSeleccionado(MouseEvent event) {
+        try{
+            txtIDPrueba4.setText(T4DatosdePruebas4.getSelectionModel().getSelectedItem().getidprueba());
+            txtT4Periodica.setText(T4DatosdePruebas4.getSelectionModel().getSelectedItem().getperiodica());
+            
+        }catch (NullPointerException e){
+            System.out.println("Error pasando DTPrueba");
+        }
+        
+        
+        
     }
 
 }

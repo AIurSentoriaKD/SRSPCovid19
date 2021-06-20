@@ -515,7 +515,7 @@
                                                 <Button fx:id="btnSeleccionarDato4" layoutX="402.0" layoutY="530.0" mnemonicParsing="false" onAction="#SeleccionarDato_ADatoPrueba4" prefHeight="32.0" prefWidth="99.0" text="SELECCIONAR" />
                                              </children>
                                           </Pane>
-                                          <Pane layoutX="735.0" layoutY="425.0" prefHeight="204.0" prefWidth="366.0">
+                                          <Pane layoutX="725.0" layoutY="419.0" prefHeight="221.0" prefWidth="366.0">
                                              <children>
                                                 <GridPane layoutX="35.0" layoutY="42.0">
                                                   <columnConstraints>
@@ -530,11 +530,11 @@
                                                    <children>
                                                       <Label text="IDPRUEBA:" />
                                                       <Label text="Periodica:" GridPane.rowIndex="1" />
-                                                      <TextField fx:id="txtIDPrueba4" GridPane.columnIndex="2" />
-                                                      <TextField fx:id="txtT4Periodica" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                      <TextField fx:id="txtIDPrueba4" editable="false" GridPane.columnIndex="2" />
+                                                      <TextField fx:id="txtT4Periodica" editable="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                                    </children>
                                                 </GridPane>
-                                                <Label layoutX="104.0" layoutY="14.0" text="RESULTADO DE PRUEBA">
+                                                <Label layoutX="83.0" layoutY="14.0" text="RESULTADO DE PRUEBA">
                                                    <font>
                                                       <Font size="19.0" />
                                                    </font>
@@ -543,9 +543,10 @@
                                                 <ComboBox fx:id="cmbResultadoPrueba4" layoutX="183.0" layoutY="111.0" prefHeight="25.0" prefWidth="151.0" />
                                                 <Button fx:id="btnGuardarResultadodePrueba4" layoutX="201.0" layoutY="152.0" mnemonicParsing="false" onAction="#GuardarResultadodePrueba4" prefHeight="41.0" prefWidth="95.0" text="GUARDAR" />
                                                 <Button fx:id="btnCancelarEstadoPrueba4" layoutX="73.0" layoutY="152.0" mnemonicParsing="false" onAction="#LimpiarDatoResultadodePrueba4" prefHeight="41.0" prefWidth="95.0" text="CANCELAR" />
+                                                <Label fx:id="lblMensajeT4" layoutX="53.0" layoutY="199.0" prefHeight="17.0" prefWidth="260.0" textAlignment="CENTER" wrapText="true" />
                                              </children>
                                           </Pane>
-                                          <Label layoutX="264.0" layoutY="14.0" text="ACTUALIZAR Y VER RESULTADOS DE PRUEBAS">
+                                          <Label layoutX="438.0" layoutY="14.0" text="ACTUALIZAR Y VER RESULTADOS DE PRUEBAS">
                                              <font>
                                                 <Font size="19.0" />
                                              </font>

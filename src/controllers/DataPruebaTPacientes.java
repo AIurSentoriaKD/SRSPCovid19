@@ -11,7 +11,13 @@ public class DataPruebaTPacientes {
             fechainscrito,
             edad;
 
-    public DataPruebaTPacientes(String idhistorial, String idpaciente, String nombre, String fechainscrito, String edad) {
+    public DataPruebaTPacientes(
+            String idhistorial, 
+            String idpaciente, 
+            String nombre, 
+            String fechainscrito, 
+            String edad
+    ) {
         this.idhistorial = new SimpleStringProperty(idhistorial);
         this.idpaciente = new SimpleStringProperty(idpaciente);
         this.nombre = new SimpleStringProperty(nombre);
