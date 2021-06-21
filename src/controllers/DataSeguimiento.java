@@ -17,20 +17,35 @@ public class DataSeguimiento {
             idpaciente,
             nombre,
             numero,
-            correo;
+            correo,
+            sexo,
+            dni,
+            peso,
+            fechanac,
+            sintomas;
     
     public DataSeguimiento(
             String idhistorial,
             String idpaciente,
             String nombre,
             String numero,
-            String correo
+            String correo,
+            String sexo,
+            String dni,
+            String peso,
+            String fechanac,
+            String sintomas
     ){
         this.idhistorial = new SimpleStringProperty(idhistorial);
         this.idpaciente = new SimpleStringProperty(idpaciente);
         this.nombre = new SimpleStringProperty(nombre);
         this.numero = new SimpleStringProperty(numero);
         this.correo = new SimpleStringProperty(correo);
+        this.sexo = new SimpleStringProperty(sexo);
+        this.dni = new SimpleStringProperty(dni);
+        this.peso = new SimpleStringProperty(peso);
+        this.fechanac = new SimpleStringProperty(fechanac);
+        this.sintomas = new SimpleStringProperty(sintomas);
     }
     
     //GETTERS
@@ -49,6 +64,21 @@ public class DataSeguimiento {
     public String getcorreo() {
         return correo.get();
     }
+    public String getsexo() {
+        return sexo.get();
+    }
+    public String getdni() {
+        return dni.get();
+    }
+    public String getpeso() {
+        return peso.get();
+    }
+    public String getfechanac() {
+        return fechanac.get();
+    }
+    public String getsintomas() {
+        return sintomas.get();
+    }
     
     //SETTERS
     public void setidhistorial(String value){
@@ -66,6 +96,21 @@ public class DataSeguimiento {
     public void setcorreo(String value){
         correo.set(value);
     }
+    public void setsexo(String value){
+        sexo.set(value);
+    }
+    public void setdni(String value){
+        dni.set(value);
+    }
+    public void setpeso(String value){
+        peso.set(value);
+    }
+    public void setfechanac(String value){
+        fechanac.set(value);
+    }
+    public void setsintomas(String value){
+        sintomas.set(value);
+    }
     
     //property
     public StringProperty idhistorialProperty(){
@@ -82,5 +127,20 @@ public class DataSeguimiento {
     }
     public StringProperty correoProperty(){
         return correo;
+    }
+    public StringProperty sexoProperty(){
+        return sexo;
+    }
+    public StringProperty dniProperty(){
+        return dni;
+    }
+    public StringProperty pesoProperty(){
+        return peso;
+    }
+    public StringProperty fechanacProperty(){
+        return fechanac;
+    }
+    public StringProperty sintomasProperty(){
+        return sintomas;
     }
 }

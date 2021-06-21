@@ -33,6 +33,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -55,6 +56,7 @@ public class MainwindowController implements Initializable {
     private ObservableList<DataPacientesTratamientoINN> dataPacientesInn;
     private ObservableList<DataPruebaTPacientes> datapruebapaciente;
     private ObservableList<DataPruebaModel> datapruebas;
+    private ObservableList<DataSeguimiento> dataseguimientop;
 
     @FXML
     private Tab tabDetallesPacientes;
@@ -185,8 +187,6 @@ public class MainwindowController implements Initializable {
     @FXML
     private Button btnGuardarResultadodePrueba4;
     @FXML
-    private Button btnCancelarEstadoPrueba4;
-    @FXML
     private TableView<DataPruebaModel> T4DatosdePruebas4;
     @FXML
     private TableColumn<DataPruebaModel, String> T4CIdPrueba;
@@ -207,17 +207,17 @@ public class MainwindowController implements Initializable {
     @FXML
     private TextField txtNombreLstPacientes5;
     @FXML
-    private TableView<?> T5HistorlalYPaciente1;
+    private TableView<DataSeguimiento> T5HistorlalYPaciente1;
     @FXML
-    private TableColumn<?, ?> T5CIDHistorial1;
+    private TableColumn<DataSeguimiento, String> T5CIDHistorial1;
     @FXML
-    private TableColumn<?, ?> T5CIDPaciente1;
+    private TableColumn<DataSeguimiento, String> T5CIDPaciente1;
     @FXML
-    private TableColumn<?, ?> T5CNombre1;
+    private TableColumn<DataSeguimiento, String> T5CNombre1;
     @FXML
-    private TableColumn<?, ?> T5CFechaInscrito1;
+    private TableColumn<DataSeguimiento, String> T5CFechaInscrito1;
     @FXML
-    private TableColumn<?, ?> T5CEdad1;
+    private TableColumn<DataSeguimiento, String> T5CEdad1;
     @FXML
     private TextField txtsexo5;
     @FXML
@@ -281,9 +281,7 @@ public class MainwindowController implements Initializable {
     //Observable Lists de Medicamentos
     ObservableList<String> lmedicamentos = FXCollections.observableArrayList("Paracetamol", "Amoxicilina", "Ivermectina", "Panadol");
     ObservableList<String> pmedicamentos = FXCollections.observableArrayList();
-    
-    
-    
+
     @FXML
     private TextField idhistorial3;
     @FXML
@@ -296,6 +294,18 @@ public class MainwindowController implements Initializable {
     private TextField txtT4Periodica;
     @FXML
     private Label lblMensajeT4;
+    @FXML
+    private Button btnGuardarNuevaPruebaT4;
+    @FXML
+    private Label lblMensajeT4_nuevaprueba;
+    @FXML
+    private ComboBox<?> cmbTipoPrueba21;
+    @FXML
+    private Label lblPrecioNuevaPrueba;
+    @FXML
+    private Label lblFechaNuevaPruebaT4;
+    @FXML
+    private TabPane maintabpane;
 
     /**
      * Initializes the controller class.
@@ -334,7 +344,9 @@ public class MainwindowController implements Initializable {
 
         ObservableList pruebascmblist = FXCollections.observableList(tipospruebacmb);
         cmbTipoPrueba2.getItems().clear();
+        cmbTipoPrueba21.getItems().clear();
         cmbTipoPrueba2.setItems(pruebascmblist);
+        cmbTipoPrueba21.setItems(pruebascmblist);
 
         List<String> sexoscmb = new ArrayList<>();
         sexoscmb.add("M");
@@ -342,14 +354,13 @@ public class MainwindowController implements Initializable {
         ObservableList sexocmbList = FXCollections.observableList(sexoscmb);
         cmbSexo2.getItems().clear();
         cmbSexo2.setItems(sexocmbList);
-        
+
         List<String> resultadopruebas = new ArrayList<>();
         resultadopruebas.add("POSITIVO");
         resultadopruebas.add("NEGATIVO");
         ObservableList resultadopruebacmb = FXCollections.observableList(resultadopruebas);
         cmbResultadoPrueba4.getItems().clear();
         cmbResultadoPrueba4.setItems(resultadopruebacmb);
-        
 
     }
 
@@ -436,6 +447,7 @@ public class MainwindowController implements Initializable {
 
     @FXML
     private void DarSeguimiento1Redirect(ActionEvent event) {
+        maintabpane.getSelectionModel().select(4);
     }
 
     @FXML
@@ -444,8 +456,26 @@ public class MainwindowController implements Initializable {
 
     @FXML
     private void LimpiarDatos2(ActionEvent event) {
+        txtDNI2.setText("");
+        txtAPMat2.setText("");
+        txtPatern2.setText("");
+        txtNombres2.setText("");
+        txtCorreoE2.setText("");
+        txtTelef2.setText("");
+        cmbSexo2.setValue(null);
         
+        txtPeso2.setText("");
+        txtAltura2.setText("");
+        dateNacPac2.setValue(null);
+        cmbNacionac2.setValue(null);
+        cmbNacionac2.setValue(null);
         
+        txtASintomas2.setText(null);
+        
+        cmbTipoPrueba2.setValue(null);
+        lblPrecioPrueba2.setText("");
+        datePrueba2.setValue(null);
+        chkPeriodica2.setSelected(false);
     }
 
     @FXML
@@ -593,6 +623,28 @@ public class MainwindowController implements Initializable {
             }
 
         }
+        
+        txtDNI2.setText("");
+        txtAPMat2.setText("");
+        txtPatern2.setText("");
+        txtNombres2.setText("");
+        txtCorreoE2.setText("");
+        txtTelef2.setText("");
+        cmbSexo2.setValue(null);
+        
+        txtPeso2.setText("");
+        txtAltura2.setText("");
+        dateNacPac2.setValue(null);
+        cmbNacionac2.setValue(null);
+        cmbNacionac2.setValue(null);
+        
+        txtASintomas2.setText(null);
+        
+        cmbTipoPrueba2.setValue(null);
+        lblPrecioPrueba2.setText("");
+        datePrueba2.setValue(null);
+        chkPeriodica2.setSelected(false);
+        
     }
 
     @FXML
@@ -765,11 +817,10 @@ public class MainwindowController implements Initializable {
             String IDpersonal = parts[0];
 
             //System.out.println(IDpersonal);
-
             String sqlar = "exec uspListar " + IDpersonal;
-            
+
             datapruebapaciente = FXCollections.observableArrayList();
-            
+
             ResultSet rs = conn.createStatement().executeQuery(sqlar);
 
             while (rs.next()) {
@@ -804,16 +855,16 @@ public class MainwindowController implements Initializable {
 
     @FXML
     private void GuardarResultadodePrueba4(ActionEvent event) {
-        
+
         String ResultadoPrueba = (String) cmbResultadoPrueba4.getValue();
-        
-        if (ResultadoPrueba.equals("")){
+
+        if (ResultadoPrueba.equals("")) {
             lblMensajeT4.setText("Debe seleccionar un valor en 'Resultado'");
-        }else{
+        } else {
             int idprueba = Integer.parseInt(txtIDPrueba4.getText());
-            
+
             String sql = "update tprueba set resultado = ? where idprueba = ?";
-            try{
+            try {
                 dc = new DBConnector();
                 Connection conn = dc.Connect();
                 PreparedStatement ps = conn.prepareStatement(sql);
@@ -821,18 +872,65 @@ public class MainwindowController implements Initializable {
                 ps.setInt(2, idprueba);
                 ps.executeUpdate();
                 System.out.println("PRUEBA ACTUALIZADA CORRECTAMENTE!!!!!!");
-            }catch(SQLException e){
+                lblMensajeT4.setText("Prueba actualizada.");
+            } catch (SQLException e) {
                 System.out.println("Error actualiando prueba!!!!");
             }
         }
+        txtIDPrueba4.setText("");
+        txtT4Periodica.setText("");
+        cmbResultadoPrueba4.setValue(null);
+        
     }
 
-    @FXML
-    private void LimpiarDatoResultadodePrueba4(ActionEvent event) {
-    }
 
     @FXML
     private void ActualizarTablaListaSeguimineto5(ActionEvent event) {
+        dc = new DBConnector();
+
+        try {
+            Connection conn = dc.Connect();
+
+            Stage stage = (Stage) btnActualizarListaSeguimiento5.getScene().getWindow();
+            String title = stage.getTitle();
+
+            String[] parts = title.split(" ");
+            String IDpersonal = parts[0];
+
+            String sqlar = "exec uspListarPatientPosi " + IDpersonal;
+
+            dataseguimientop = FXCollections.observableArrayList();
+
+            ResultSet rs = conn.createStatement().executeQuery(sqlar);
+
+            while (rs.next()) {
+                dataseguimientop.add(new DataSeguimiento(
+                        rs.getString(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getString(6),
+                        rs.getString(7),
+                        rs.getString(8),
+                        rs.getString(9),
+                        rs.getString(10)
+                ));
+            }
+
+            T5CIDHistorial1.setCellValueFactory(new PropertyValueFactory<>("idhistorial"));
+            T5CIDPaciente1.setCellValueFactory(new PropertyValueFactory<>("idpaciente"));
+            T5CNombre1.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+            T5CFechaInscrito1.setCellValueFactory(new PropertyValueFactory<>("numero"));
+            T5CEdad1.setCellValueFactory(new PropertyValueFactory<>("correo"));
+
+            T5HistorlalYPaciente1.setItems(null);
+            T5HistorlalYPaciente1.setItems(dataseguimientop);
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
     }
 
     @FXML
@@ -866,11 +964,11 @@ public class MainwindowController implements Initializable {
     private void cmbTipoPruebaPrices(ActionEvent event) {
         System.out.println(cmbTipoPrueba2.getValue());
         if (cmbTipoPrueba2.getValue().equals("Rapida")) {
-            lblPrecioPrueba2.setText("S/ 50");
+            lblPrecioPrueba2.setText(" 50");
         } else if (cmbTipoPrueba2.getValue().equals("Molecular")) {
-            lblPrecioPrueba2.setText("S/ 100");
+            lblPrecioPrueba2.setText(" 100");
         } else if (cmbTipoPrueba2.getValue().equals("Isopada")) {
-            lblPrecioPrueba2.setText("S/ 120");
+            lblPrecioPrueba2.setText(" 120");
         }
 
     }
@@ -883,9 +981,9 @@ public class MainwindowController implements Initializable {
 
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date dateactual = new Date(System.currentTimeMillis());
-            System.out.println(formatter.format(dateactual));
+            //System.out.println(formatter.format(dateactual));
             String fecha_act = formatter.format(dateactual);
-            System.out.println(fecha_act);
+            //System.out.println(fecha_act);
 
             dateFechaHistorial.setText(fecha_act);
 
@@ -906,7 +1004,7 @@ public class MainwindowController implements Initializable {
             Connection conn = dc.Connect();
 
             String sql = "select * from tprueba where idhistorial = " + idhistorial;
-            
+
             datapruebas = FXCollections.observableArrayList();
             try {
                 ResultSet rs = conn.createStatement().executeQuery(sql);
@@ -946,16 +1044,98 @@ public class MainwindowController implements Initializable {
 
     @FXML
     private void Tab4T2DataPruebasPacienteSeleccionado(MouseEvent event) {
-        try{
+        try {
             txtIDPrueba4.setText(T4DatosdePruebas4.getSelectionModel().getSelectedItem().getidprueba());
             txtT4Periodica.setText(T4DatosdePruebas4.getSelectionModel().getSelectedItem().getperiodica());
-            
-        }catch (NullPointerException e){
+
+        } catch (NullPointerException e) {
             System.out.println("Error pasando DTPrueba");
         }
-        
-        
-        
+
+    }
+
+    @FXML
+    private void T5PassTratamiento(MouseEvent event) {
+
+        try {
+            txtsexo5.setText(T5HistorlalYPaciente1.getSelectionModel().getSelectedItem().getsexo());
+            txtDni5.setText(T5HistorlalYPaciente1.getSelectionModel().getSelectedItem().getdni());
+            txtEmail5.setText(T5HistorlalYPaciente1.getSelectionModel().getSelectedItem().getcorreo());
+            txtnroTlf5.setText(T5HistorlalYPaciente1.getSelectionModel().getSelectedItem().getnumero());
+            txtPeso5.setText(T5HistorlalYPaciente1.getSelectionModel().getSelectedItem().getpeso());
+            txtfechanac5.setText(T5HistorlalYPaciente1.getSelectionModel().getSelectedItem().getfechanac());
+            txtfldSintomas5.setText(T5HistorlalYPaciente1.getSelectionModel().getSelectedItem().getsintomas());
+
+            lblIdPacienteSeguimiento.setText(T5HistorlalYPaciente1.getSelectionModel().getSelectedItem().getidpaciente());
+        } catch (NullPointerException e) {
+            System.out.println("Error de datos al pasar seguimiento, la tabla esta vacia");
+        }
+
+    }
+
+    @FXML
+    private void GuardarNuevaPruevaT4(ActionEvent event) {
+        dc = new DBConnector();
+        try {
+            int idhistorial = Integer.parseInt(T3HistorlalYPaciente.getSelectionModel().getSelectedItem().getidhistorial());
+            Connection conn = dc.Connect();
+            
+            String SQLStatement = "select count(*) as total from TPrueba";
+            
+            ResultSet rs = conn.createStatement().executeQuery(SQLStatement);
+            int pruebas = 0;
+            while (rs.next()) {
+                pruebas = rs.getInt(1);
+            }
+            
+            pruebas = pruebas + 1;
+            
+            String DP_TipoPrueba = (String) cmbTipoPrueba21.getValue();
+            
+            try {
+                String dataprueba = "INSERT INTO TPrueba (IdPrueba, Costo, Resultado, Tipo, Fecha_Prueba, Periodica, IdHistorial) VALUES(?,?,?,?,?,?,?)";
+                PreparedStatement ps = conn.prepareStatement(dataprueba);
+                ps.setInt(1, pruebas);
+                ps.setString(2, lblPrecioNuevaPrueba.getText());
+                ps.setString(3, "Evaluando");
+                ps.setString(4, DP_TipoPrueba);
+                ps.setString(5, lblFechaNuevaPruebaT4.getText());
+                ps.setString(6, "SI");
+                ps.setInt(7, idhistorial);
+                ps.executeUpdate();
+                System.out.println("DATA PRUEBA AGREGADA CORRECTAMENTE!!");
+                lblMensajeT4_nuevaprueba.setText("Datos de nueva prueba agregada.");
+                
+            } catch (SQLException e) {
+                System.out.println("error insertando prueba!!");
+                System.out.println(e);
+            }
+
+        } catch (SQLException e) {
+
+        }
+        cmbTipoPrueba21.setValue(null);
+        lblPrecioNuevaPrueba.setText("");
+        lblFechaNuevaPruebaT4.setText("");
+
+    }
+
+    @FXML
+    private void cmbTipoPruebaNuevaPruebaPrices(ActionEvent event) {
+        System.out.println(cmbTipoPrueba21.getValue());
+        if (cmbTipoPrueba21.getValue().equals("Rapida")) {
+            lblPrecioNuevaPrueba.setText(" 50");
+        } else if (cmbTipoPrueba21.getValue().equals("Molecular")) {
+            lblPrecioNuevaPrueba.setText(" 100");
+        } else if (cmbTipoPrueba21.getValue().equals("Isopada")) {
+            lblPrecioNuevaPrueba.setText(" 120");
+        }
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateactual = new Date(System.currentTimeMillis());
+        //System.out.println(formatter.format(dateactual));
+        String fecha_act = formatter.format(dateactual);
+        //System.out.println(fecha_act);
+        lblFechaNuevaPruebaT4.setText(fecha_act);
     }
 
 }
