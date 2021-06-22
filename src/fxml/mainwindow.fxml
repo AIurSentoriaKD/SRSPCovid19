@@ -437,7 +437,7 @@
                                                 <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="152.0" text="ID Ultima Prueba:" textAlignment="CENTER" GridPane.rowIndex="4" />
                                                 <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="152.0" text="ID Historial:" textAlignment="CENTER" />
                                                 <TextField fx:id="idhistorial3" editable="false" GridPane.rowIndex="1" />
-                                                <TextField fx:id="idprueba3" GridPane.rowIndex="5" />
+                                                <TextField fx:id="idprueba3" editable="false" GridPane.rowIndex="5" />
                                                 <TextField fx:id="dateFechaHistorial" editable="false" GridPane.rowIndex="3" />
                                              </children>
                                           </GridPane>
@@ -454,8 +454,8 @@
                                           <ListView fx:id="lstListaRiesgos3" layoutX="14.0" layoutY="72.0" prefHeight="163.0" prefWidth="183.0" />
                                           <Label alignment="CENTER" contentDisplay="CENTER" layoutX="40.0" layoutY="45.0" prefHeight="27.0" prefWidth="132.0" text="LISTA DE RIESGOS" textAlignment="CENTER" />
                                           <Label alignment="CENTER" contentDisplay="CENTER" layoutX="374.0" layoutY="45.0" prefHeight="27.0" prefWidth="132.0" text="RIESGOS DEL PACIENTE" textAlignment="CENTER" />
-                                          <Button fx:id="btnAddRisk3" layoutX="233.0" layoutY="86.0" mnemonicParsing="false" onAction="#AddRisk3LtoL" prefHeight="39.0" prefWidth="79.0" text="AGREGAR" />
-                                          <Button fx:id="btnRemoveRisk3" layoutX="233.0" layoutY="150.0" mnemonicParsing="false" onAction="#RemoveRisk3LtoL" prefHeight="39.0" prefWidth="79.0" text="QUITAR" />
+                                          <Button fx:id="btnAddRisk3" layoutX="233.0" layoutY="103.0" mnemonicParsing="false" onAction="#AddRisk3LtoL" prefHeight="39.0" prefWidth="79.0" text="AGREGAR" />
+                                          <Button fx:id="btnRemoveRisk3" layoutX="233.0" layoutY="173.0" mnemonicParsing="false" onAction="#RemoveRisk3LtoL" prefHeight="39.0" prefWidth="79.0" text="QUITAR" />
                                           <ListView fx:id="lstRiesgosDePaciente3" layoutX="349.0" layoutY="72.0" prefHeight="163.0" prefWidth="183.0" />
                                        </children>
                                     </Pane>
@@ -478,9 +478,11 @@
                                           <Button fx:id="btnQuitarMedicamento3" layoutX="57.0" layoutY="246.0" mnemonicParsing="false" onAction="#RemoveMedicament3" prefHeight="29.0" prefWidth="81.0" text="QUITAR" />
                                           <ListView fx:id="lstMEdicamentosRetadosPaciente3" layoutX="11.0" layoutY="319.0" prefHeight="163.0" prefWidth="314.0" />
                                           <Label alignment="CENTER" contentDisplay="CENTER" layoutX="11.0" layoutY="292.0" prefHeight="27.0" prefWidth="313.0" text="LISTA DE MEDICAMENTOS RECETADOS" textAlignment="CENTER" />
-                                          <Button fx:id="btnFinalizarTratamiento3" layoutX="93.0" layoutY="505.0" mnemonicParsing="false" onAction="#FinalizarTratamientoSaveALLDATA3" prefHeight="39.0" prefWidth="161.0" text="FINALIZAR TRATAMIENTO" />
+                                          <Button fx:id="btnFinalizarTratamiento3" layoutX="146.0" layoutY="505.0" mnemonicParsing="false" onAction="#FinalizarTratamientoSaveALLDATA3" prefHeight="39.0" prefWidth="161.0" text="FINALIZAR TRATAMIENTO" />
+                                          <Button fx:id="btnT3LimpiarTratamiento" layoutX="32.0" layoutY="505.0" mnemonicParsing="false" onAction="#T3LimpiarTratamiento" prefHeight="41.0" prefWidth="74.0" text="LIMPIAR" />
                                        </children>
                                     </Pane>
+                                    <Label fx:id="lblT3DataTratamientoMSG" layoutX="11.0" layoutY="587.0" prefHeight="50.0" prefWidth="334.0" textAlignment="CENTER" wrapText="true" />
                                  </children>
                               </Pane>
                            </right>
@@ -702,12 +704,10 @@
                                                       <Font size="19.0" />
                                                    </font>
                                                 </Label>
-                                                <TextArea fx:id="txtAreaSintomasNuevos5" layoutX="33.0" layoutY="126.0" prefHeight="104.0" prefWidth="200.0" />
-                                                <Label layoutX="78.0" layoutY="109.0" text="NUEVOS SINTOMAS" />
-                                                <Label layoutX="51.0" layoutY="49.0" text="NUMERO SINTOMAS NUEVOS" />
-                                                <TextField fx:id="txtNroSintmasNuevos5" layoutX="59.0" layoutY="66.0" />
+                                                <TextArea fx:id="txtAreaSintomasNuevos5" layoutX="33.0" layoutY="85.0" prefHeight="145.0" prefWidth="200.0" wrapText="true" />
+                                                <Label layoutX="20.0" layoutY="59.0" text="NUEVOS SINTOMAS (Separado por coma ( , ))" />
                                                 <Button fx:id="bttnGuardarSeguimiento5" layoutX="81.0" layoutY="247.0" mnemonicParsing="false" onAction="#GuardarListadeSeguimiento5" prefHeight="33.0" prefWidth="101.0" text="GUARDAR" />
-                                                <Label layoutX="167.0" layoutY="14.0" text="date">
+                                                <Label fx:id="lblFechaTratamiento" layoutX="150.0" layoutY="14.0" prefHeight="28.0" prefWidth="93.0">
                                                    <font>
                                                       <Font size="19.0" />
                                                    </font>

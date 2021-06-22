@@ -235,8 +235,6 @@ public class MainwindowController implements Initializable {
     @FXML
     private TextArea txtAreaSintomasNuevos5;
     @FXML
-    private TextField txtNroSintmasNuevos5;
-    @FXML
     private Button bttnGuardarSeguimiento5;
     @FXML
     private BarChart<?, ?> Graf1nroSintomasTiempo5;
@@ -306,6 +304,12 @@ public class MainwindowController implements Initializable {
     private Label lblFechaNuevaPruebaT4;
     @FXML
     private TabPane maintabpane;
+    @FXML
+    private Label lblFechaTratamiento;
+    @FXML
+    private Label lblT3DataTratamientoMSG;
+    @FXML
+    private Button btnT3LimpiarTratamiento;
 
     /**
      * Initializes the controller class.
@@ -362,6 +366,13 @@ public class MainwindowController implements Initializable {
         cmbResultadoPrueba4.getItems().clear();
         cmbResultadoPrueba4.setItems(resultadopruebacmb);
 
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateactual = new Date(System.currentTimeMillis());
+        //System.out.println(formatter.format(dateactual));
+        String fecha_act = formatter.format(dateactual);
+        //System.out.println(fecha_act);
+
+        lblFechaTratamiento.setText(fecha_act);
     }
 
     @FXML
@@ -456,23 +467,23 @@ public class MainwindowController implements Initializable {
 
     @FXML
     private void LimpiarDatos2(ActionEvent event) {
+        lblMensaje2.setText("");
         txtDNI2.setText("");
         txtAPMat2.setText("");
         txtPatern2.setText("");
         txtNombres2.setText("");
         txtCorreoE2.setText("");
         txtTelef2.setText("");
-        cmbSexo2.setValue(null);
-        
+        cmbSexo2.getSelectionModel().clearSelection();
+
         txtPeso2.setText("");
         txtAltura2.setText("");
         dateNacPac2.setValue(null);
-        cmbNacionac2.setValue(null);
-        cmbNacionac2.setValue(null);
-        
+        cmbNacionac2.getSelectionModel().clearSelection();
+
         txtASintomas2.setText(null);
-        
-        cmbTipoPrueba2.setValue(null);
+
+        cmbTipoPrueba2.getSelectionModel().clearSelection();;
         lblPrecioPrueba2.setText("");
         datePrueba2.setValue(null);
         chkPeriodica2.setSelected(false);
@@ -619,11 +630,12 @@ public class MainwindowController implements Initializable {
                     }
                 } catch (SQLException e) {
                     System.out.println(e);
+                    lblMensaje2.setText("ERROR AL INSERTAR DATOS, VERIFIQUE LOS CAMPOS");
                 }
             }
 
         }
-        
+        lblMensaje2.setText("DATOS DE PACIENTE Y PRUEBA AGREGADOS");
         txtDNI2.setText("");
         txtAPMat2.setText("");
         txtPatern2.setText("");
@@ -631,20 +643,20 @@ public class MainwindowController implements Initializable {
         txtCorreoE2.setText("");
         txtTelef2.setText("");
         cmbSexo2.setValue(null);
-        
+
         txtPeso2.setText("");
         txtAltura2.setText("");
         dateNacPac2.setValue(null);
         cmbNacionac2.setValue(null);
         cmbNacionac2.setValue(null);
-        
+
         txtASintomas2.setText(null);
-        
+
         cmbTipoPrueba2.setValue(null);
         lblPrecioPrueba2.setText("");
         datePrueba2.setValue(null);
         chkPeriodica2.setSelected(false);
-        
+
     }
 
     @FXML
@@ -793,14 +805,20 @@ public class MainwindowController implements Initializable {
                 ps.setInt(5, idhistorial);
                 ps.executeUpdate();
                 System.out.println("DATA TRATAMIENTO AGREGADA CORRECTAMENTE!!");
+                lblT3DataTratamientoMSG.setText("DATA TRATAMIENTO AGREGADA CORRECTAMENTE");
             } catch (SQLException e) {
                 System.out.println("error insertando TRATAMIENTO!!");
+                lblT3DataTratamientoMSG.setText("error insertando TRATAMIENTO");
                 System.out.println(e);
             }
 
         } catch (SQLException e) {
             System.out.println(e);
         }
+
+        txtAreaDescTrat3.setText(null);
+        lstRiesgosDePaciente3.getSelectionModel().clearSelection();
+        lstMEdicamentosRetadosPaciente3.getSelectionModel().clearSelection();
 
     }
 
@@ -879,10 +897,9 @@ public class MainwindowController implements Initializable {
         }
         txtIDPrueba4.setText("");
         txtT4Periodica.setText("");
-        cmbResultadoPrueba4.setValue(null);
-        
-    }
+        cmbResultadoPrueba4.getSelectionModel().clearSelection();
 
+    }
 
     @FXML
     private void ActualizarTablaListaSeguimineto5(ActionEvent event) {
@@ -935,6 +952,61 @@ public class MainwindowController implements Initializable {
 
     @FXML
     private void GuardarListadeSeguimiento5(ActionEvent event) {
+
+        String NuevosSintomasALL = txtAreaSintomasNuevos5.getText();
+
+        if (NuevosSintomasALL.equals("")) {
+
+        } else {
+            String[] parts = NuevosSintomasALL.split(", ");
+            int Sintomas = 0;
+            for (String part : parts) {
+                Sintomas = Sintomas + 1;
+            }
+            System.out.println("Sintomas nuevos en total: " + Sintomas);
+
+            try {
+                dc = new DBConnector();
+                Connection conn = dc.Connect();
+
+                String selecttseg = "select count(*) as total from TSeguimiento";
+
+                ResultSet rs = conn.createStatement().executeQuery(selecttseg);
+                int ttseguimientos = 0;
+                while (rs.next()) {
+                    ttseguimientos = rs.getInt(1);
+                }
+
+                String Gravedad = "";
+                if (Sintomas < 3) {
+                    Gravedad = "LEVE";
+                } else if (Sintomas >= 3 || Sintomas <= 5) {
+                    Gravedad = "MODERADA";
+                } else if (Sintomas > 6) {
+                    Gravedad = "GRAVE";
+                }
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                Date dateactual = new Date(System.currentTimeMillis());
+                
+                String fecha_seg = formatter.format(dateactual);
+                
+                String IDHistorial = T5HistorlalYPaciente1.getSelectionModel().getSelectedItem().getidhistorial();
+                
+                
+                String dataprueba = "insert into tseguimiento values(?,?,?,?,?)";
+                PreparedStatement ps = conn.prepareStatement(dataprueba);
+                ps.setInt(1, ttseguimientos);
+                ps.setString(2, NuevosSintomasALL);
+                ps.setString(3, Gravedad);
+                ps.setString(4, fecha_seg);
+                ps.setInt(5, Integer.parseInt(IDHistorial));
+                ps.executeUpdate();
+                System.out.println("DATA SEGUIMIENTO AGREGADA CORRECTAMENTE!!");
+            } catch (SQLException e) {
+
+            }
+        }
+
     }
 
     @FXML
@@ -1079,42 +1151,47 @@ public class MainwindowController implements Initializable {
         try {
             int idhistorial = Integer.parseInt(T3HistorlalYPaciente.getSelectionModel().getSelectedItem().getidhistorial());
             Connection conn = dc.Connect();
-            
+
             String SQLStatement = "select count(*) as total from TPrueba";
-            
+
             ResultSet rs = conn.createStatement().executeQuery(SQLStatement);
             int pruebas = 0;
             while (rs.next()) {
                 pruebas = rs.getInt(1);
             }
-            
+
             pruebas = pruebas + 1;
-            
+
             String DP_TipoPrueba = (String) cmbTipoPrueba21.getValue();
-            
-            try {
-                String dataprueba = "INSERT INTO TPrueba (IdPrueba, Costo, Resultado, Tipo, Fecha_Prueba, Periodica, IdHistorial) VALUES(?,?,?,?,?,?,?)";
-                PreparedStatement ps = conn.prepareStatement(dataprueba);
-                ps.setInt(1, pruebas);
-                ps.setString(2, lblPrecioNuevaPrueba.getText());
-                ps.setString(3, "Evaluando");
-                ps.setString(4, DP_TipoPrueba);
-                ps.setString(5, lblFechaNuevaPruebaT4.getText());
-                ps.setString(6, "SI");
-                ps.setInt(7, idhistorial);
-                ps.executeUpdate();
-                System.out.println("DATA PRUEBA AGREGADA CORRECTAMENTE!!");
-                lblMensajeT4_nuevaprueba.setText("Datos de nueva prueba agregada.");
-                
-            } catch (SQLException e) {
-                System.out.println("error insertando prueba!!");
-                System.out.println(e);
+
+            if (DP_TipoPrueba.equals("")) {
+                return;
+            } else {
+                try {
+                    String dataprueba = "INSERT INTO TPrueba (IdPrueba, Costo, Resultado, Tipo, Fecha_Prueba, Periodica, IdHistorial) VALUES(?,?,?,?,?,?,?)";
+                    PreparedStatement ps = conn.prepareStatement(dataprueba);
+                    ps.setInt(1, pruebas);
+                    ps.setString(2, lblPrecioNuevaPrueba.getText());
+                    ps.setString(3, "Evaluando");
+                    ps.setString(4, DP_TipoPrueba);
+                    ps.setString(5, lblFechaNuevaPruebaT4.getText());
+                    ps.setString(6, "SI");
+                    ps.setInt(7, idhistorial);
+                    ps.executeUpdate();
+                    System.out.println("DATA PRUEBA AGREGADA CORRECTAMENTE!!");
+                    lblMensajeT4_nuevaprueba.setText("Datos de nueva prueba agregada.");
+
+                } catch (SQLException e) {
+                    System.out.println("error insertando prueba!!");
+                    System.out.println(e);
+                }
             }
 
         } catch (SQLException e) {
 
         }
-        cmbTipoPrueba21.setValue(null);
+
+        cmbTipoPrueba21.getSelectionModel().clearSelection();
         lblPrecioNuevaPrueba.setText("");
         lblFechaNuevaPruebaT4.setText("");
 
@@ -1136,6 +1213,15 @@ public class MainwindowController implements Initializable {
         String fecha_act = formatter.format(dateactual);
         //System.out.println(fecha_act);
         lblFechaNuevaPruebaT4.setText(fecha_act);
+    }
+
+    @FXML
+    private void T3LimpiarTratamiento(ActionEvent event) {
+        txtAreaDescTrat3.setText(null);
+        lstRiesgosDePaciente3.getSelectionModel().clearSelection();
+        lstMEdicamentosRetadosPaciente3.getSelectionModel().clearSelection();
+        lblT3DataTratamientoMSG.setText("CAMPOS LIMPIADOS");
+
     }
 
 }
