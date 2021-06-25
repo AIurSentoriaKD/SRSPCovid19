@@ -71,9 +71,16 @@ public class FxmlloginController implements Initializable {
             }
             //System.out.println("Acceso autorizado");
         }
+<<<<<<< Updated upstream
         catch(SQLException e){
             lblMensaje.setText("Acceso Denegado");
         }
+=======
+
+    }
+
+    public void LoadMainWindow() {
+>>>>>>> Stashed changes
         
     }
     

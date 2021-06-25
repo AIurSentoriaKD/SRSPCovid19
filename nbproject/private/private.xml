@@ -3,8 +3,23 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< Updated upstream
             <file>file:/C:/Users/Moon-/OneDrive/Documentos/GitHub/SRSPCovid19/src/controllers/FxmlloginController.java</file>
             <file>file:/C:/Users/Moon-/OneDrive/Documentos/GitHub/SRSPCovid19/src/srspcovid19_bd2/SRSPCovid19_BD2.java</file>
+=======
+            <file>file:/C:/Users/micro/OneDrive/Documentos/GitHub/SRSPCovid19/src/controllers/DataPacientesModel1.java</file>
+            <file>file:/C:/Users/micro/OneDrive/Documentos/GitHub/SRSPCovid19/nbproject/build-impl.xml</file>
+            <file>file:/C:/Users/micro/OneDrive/Documentos/GitHub/SRSPCovid19/src/controllers/DataPruebaModel.java</file>
+            <file>file:/C:/Users/micro/OneDrive/Documentos/GitHub/SRSPCovid19/src/srspcovid19_bd2/SRSPCovid19_BD2.java</file>
+            <file>file:/C:/Users/micro/OneDrive/Documentos/GitHub/SRSPCovid19/src/fxml/mainwindow.fxml</file>
+            <file>file:/C:/Users/micro/OneDrive/Documentos/GitHub/SRSPCovid19/src/controllers/FxmlloginController.java</file>
+            <file>file:/C:/Users/micro/OneDrive/Documentos/GitHub/SRSPCovid19/src/fxml/fxmllogin.fxml</file>
+            <file>file:/C:/Users/micro/OneDrive/Documentos/GitHub/SRSPCovid19/src/controllers/DBConnector.java</file>
+            <file>file:/C:/Users/micro/OneDrive/Documentos/GitHub/SRSPCovid19/src/controllers/SeguimientoGraf.java</file>
+            <file>file:/C:/Users/micro/OneDrive/Documentos/GitHub/SRSPCovid19/src/controllers/DataSeguimiento.java</file>
+            <file>file:/C:/Users/micro/OneDrive/Documentos/GitHub/SRSPCovid19/src/csss/mainwindow.css</file>
+            <file>file:/C:/Users/micro/OneDrive/Documentos/GitHub/SRSPCovid19/src/controllers/MainwindowController.java</file>
+>>>>>>> Stashed changes
         </group>
     </open-files>
 </project-private>

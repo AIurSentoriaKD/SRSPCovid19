@@ -30,7 +30,17 @@ public class DBConnector {
         return null;
     }
     //String Driver="com.microsoft.sqlserver.jdbc.SQLServerDriver";
+<<<<<<< Updated upstream
     String User="sqlUsuario";
     String Pass="123456789";
     String url ="jdbc:sqlserver://DESKTOP-F5IOQT8\\Moon-:1433;databaseName=DBCovid";
+=======
+//    String User="sqlUsuario";
+//    String Pass="123456789";
+//    String url ="jdbc:sqlserver://DESKTOP-F5IOQT8\\Moon-:1433;databaseName=DBCovid";
+    
+    String User="sqlUsuario";
+    String Pass="123456";
+    String url ="jdbc:sqlserver://DESKTOP-BKMP60J\\micro:1433;databaseName=DBCovid";
+>>>>>>> Stashed changes
 }
